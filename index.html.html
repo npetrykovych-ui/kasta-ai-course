@@ -241,6 +241,16 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
       </div>
     </div>
 
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;">
+      <div style="font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.1em;color:var(--accent);margin-bottom:14px;">ДІАГНОСТИКА</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onclick="testWrite()" style="background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:12px;cursor:pointer;">1. Записати тест</button>
+        <button onclick="testRead()" style="background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:12px;cursor:pointer;">2. Прочитати тест</button>
+        <button onclick="testList()" style="background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:12px;cursor:pointer;">3. Список ключів</button>
+      </div>
+      <div id="diag-result" style="margin-top:12px;font-size:12px;color:#C8C4BF;background:var(--surface2);border-radius:8px;padding:12px;min-height:40px;word-break:break-all;"></div>
+    </div>
+
     <!-- Статистика -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;">
@@ -308,10 +318,43 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 </div>
 
 <script>
-const TRACKER_URL = 'https://script.google.com/macros/s/AKfycbwVTmfaskpSICeh1no4pPkJG26LN9eX8p-JmY360wNV25sWaUdKTVaPcxvhBwAzowtN/exec';
+const TRACKER_URL = '';
+const AIRTABLE_TOKEN = 'patCnxaQebfKDAqEr.81afa0b3576f63c690654ea9966e4dc6a5dd53799c62f7506f831afe95c7bae4';
+const AIRTABLE_BASE = 'appcFpBqrlD4DXCu8';
+const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE}`;
 
 let student = null;
 let courseStartTime = null;
+
+async function testWrite() {
+  const el = document.getElementById('diag-result');
+  try {
+    const result = await window.storage.set('kasta-course:test:1', JSON.stringify({hello:'world', time: Date.now()}), true);
+    el.innerHTML = `✅ Запис: ${JSON.stringify(result)}`;
+  } catch(e) {
+    el.innerHTML = `❌ Помилка запису: ${e.message}`;
+  }
+}
+
+async function testRead() {
+  const el = document.getElementById('diag-result');
+  try {
+    const result = await window.storage.get('kasta-course:test:1', true);
+    el.innerHTML = `✅ Читання: ${JSON.stringify(result)}`;
+  } catch(e) {
+    el.innerHTML = `❌ Помилка читання: ${e.message}`;
+  }
+}
+
+async function testList() {
+  const el = document.getElementById('diag-result');
+  try {
+    const result = await window.storage.list('kasta-course:', true);
+    el.innerHTML = `✅ Ключів: ${result?.keys?.length || 0}<br>${JSON.stringify(result?.keys)}`;
+  } catch(e) {
+    el.innerHTML = `❌ Помилка списку: ${e.message}`;
+  }
+}
 
 async function sendToSheets(data) {
   try {
@@ -1258,7 +1301,7 @@ const modules = [
 }
 ];
 
-function registerAndStart() {
+async function registerAndStart() {
   const name = document.getElementById('reg-name').value.trim();
   const email = document.getElementById('reg-email').value.trim();
   const team = document.getElementById('reg-team').value;
@@ -1288,7 +1331,8 @@ function registerAndStart() {
 
   courseStartTime = Date.now();
 
-  sendToSheets({
+  // Чекаємо поки дані збережуться
+  await sendToSheets({
     type: 'registration',
     studentId: student.id,
     name: student.name,
@@ -1391,7 +1435,7 @@ function answerQuiz(el, type) {
     if(correct) correct.classList.add('correct');
   }
 }
-function markDone(modId, lesId, e) {
+async function markDone(modId, lesId, e) {
   e.stopPropagation();
   const key = modId+'-'+lesId;
   doneMap[key] = true;
