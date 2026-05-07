@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kasta AI Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0E0E0E; --surface: #1A1A1A; --surface2: #222; --border: #2E2E2E;
+  --accent: #FF6B35; --accent2: #FFD166; --text: #F0EDE8; --muted: #888;
+  --success: #4CAF7D; --info: #4C88FF; --teal: #1D9E75;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-weight: 300; min-height: 100vh; }
+.topnav { position: sticky; top: 0; z-index: 100; background: rgba(14,14,14,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; gap: 1rem; height: 52px; }
+.nav-logo { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: 0.04em; }
+.nav-sep { width: 1px; height: 20px; background: var(--border); }
+.nav-title { font-size: 12px; color: var(--muted); flex: 1; }
+.nav-progress { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+.pbar { width: 80px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.pbar-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s; }
+.screen { display: none; animation: fadeIn 0.3s ease; }
+.screen.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.welcome { max-width: 680px; margin: 0 auto; padding: 4rem 2rem; }
+.w-tag { display: inline-flex; align-items: center; gap: 6px; font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--accent); background: rgba(255,107,53,0.1); border: 1px solid rgba(255,107,53,0.2); padding: 5px 12px; border-radius: 20px; margin-bottom: 1.5rem; }
+.w-title { font-family: 'Unbounded', sans-serif; font-size: clamp(26px, 5vw, 42px); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1rem; }
+.w-title span { color: var(--accent); }
+.w-sub { font-size: 15px; color: #C8C4BF; line-height: 1.7; margin-bottom: 2rem; max-width: 520px; }
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.why-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+.why-icon { font-size: 22px; margin-bottom: 8px; }
+.why-label { font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600; color: var(--accent); margin-bottom: 6px; letter-spacing: 0.06em; }
+.why-text { font-size: 12px; color: #C8C4BF; line-height: 1.6; }
+.result-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.result-label { font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 12px; }
+.result-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #C8C4BF; margin-bottom: 8px; line-height: 1.5; }
+.result-check { color: var(--success); flex-shrink: 0; margin-top: 1px; }
+.habit-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+.habit-label { font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 6px; }
+.habit-text { font-size: 15px; color: var(--text); line-height: 1.6; }
+.start-btn { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 14px; font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; cursor: pointer; transition: opacity 0.2s, transform 0.1s; }
+.start-btn:hover { opacity: 0.88; }
+.start-btn:active { transform: scale(0.98); }
+.course-wrap { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 52px); }
+.sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 0; position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto; }
+.sidebar-profile { padding: 0 1.25rem 1.25rem; border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+.profile-change { font-size: 11px; color: var(--accent); cursor: pointer; }
+.profile-change:hover { opacity: 0.8; }
+.sidebar-section { padding: 0 1.25rem; margin-bottom: 1.5rem; }
+.sidebar-section-label { font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+.mod-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.15s; margin-bottom: 2px; }
+.mod-item:hover { background: var(--surface2); }
+.mod-item.active { background: rgba(255,107,53,0.1); }
+.mod-item.done .mod-num-badge { background: var(--success); color: #fff; }
+.mod-num-badge { width: 20px; height: 20px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--muted); flex-shrink: 0; margin-top: 1px; font-weight: 500; }
+.mod-item.active .mod-num-badge { background: var(--accent); color: #fff; }
+.mod-item-info { flex: 1; }
+.mod-item-name { font-size: 12px; color: var(--text); line-height: 1.4; }
+.mod-item.done .mod-item-name { color: var(--muted); }
+.mod-item-dur { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.pro-badge { font-size: 9px; background: rgba(76,136,255,0.12); color: var(--info); padding: 1px 5px; border-radius: 4px; font-weight: 500; }
+.content-area { padding: 2.5rem 3rem; max-width: 720px; }
+.module-header { margin-bottom: 2rem; }
+.mod-tag { display: inline-flex; align-items: center; gap: 6px; font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.1em; color: var(--accent); background: rgba(255,107,53,0.1); border: 1px solid rgba(255,107,53,0.15); padding: 4px 10px; border-radius: 20px; margin-bottom: 1rem; }
+.mod-title { font-family: 'Unbounded', sans-serif; font-size: clamp(18px, 3vw, 26px); font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 0.75rem; }
+.mod-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.meta-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); }
+.meta-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+.objective-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+.obj-label { font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 5px; }
+.obj-text { font-size: 13px; color: #C8C4BF; line-height: 1.6; }
+.lesson-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+.lesson-card:hover { border-color: #444; }
+.lesson-card.active { border-color: var(--accent); }
+.lesson-card.done { opacity: 0.7; }
+.lesson-head { padding: 1rem 1.25rem; display: flex; align-items: center; gap: 12px; }
+.l-status { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); flex-shrink: 0; transition: all 0.2s; }
+.lesson-card.active .l-status { background: var(--accent); border-color: var(--accent); color: #fff; }
+.lesson-card.done .l-status { background: var(--success); border-color: var(--success); color: #fff; }
+.l-info { flex: 1; }
+.l-num { font-size: 10px; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 2px; }
+.l-name { font-size: 14px; font-weight: 500; color: var(--text); }
+.l-dur { font-size: 11px; color: var(--muted); }
+.lesson-body { display: none; border-top: 1px solid var(--border); padding: 1.5rem 1.25rem; background: var(--surface2); }
+.lesson-body.open { display: block; }
+.sec-tag { font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.sec-tag::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.content-text { font-size: 14px; line-height: 1.75; color: #C8C4BF; margin-bottom: 1rem; }
+.content-text strong { color: var(--text); font-weight: 500; }
+.content-text em { color: var(--accent2); font-style: normal; }
+.tip-box { background: rgba(255,209,102,0.07); border: 1px solid rgba(255,209,102,0.15); border-radius: 8px; padding: 12px 14px; font-size: 13px; color: var(--accent2); margin: 12px 0; }
+.pro-note { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: #E74C3C; background: rgba(231,76,60,0.08); border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; border: 1px solid rgba(231,76,60,0.15); line-height: 1.5; }
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+.compare-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px; background: var(--surface); }
+.compare-card h4 { font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600; margin-bottom: 8px; }
+.compare-card.a h4 { color: #10A37F; }
+.compare-card.b h4 { color: var(--accent); }
+.compare-item { font-size: 12px; color: var(--muted); padding: 3px 0; display: flex; gap: 6px; }
+.compare-item::before { content: '—'; flex-shrink: 0; }
+.models-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0; }
+.model-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px; background: var(--surface); }
+.model-name { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 3px; }
+.model-tag { font-size: 10px; color: var(--muted); margin-bottom: 8px; }
+.model-use { font-size: 12px; color: #C8C4BF; line-height: 1.5; }
+.eco-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+.eco-card { border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: var(--surface); }
+.eco-icon { font-size: 18px; margin-bottom: 6px; }
+.eco-name { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.eco-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+.eco-tag { display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 4px; margin-top: 4px; font-weight: 500; }
+.tag-free { background: rgba(76,175,125,0.15); color: var(--success); }
+.tag-pro { background: rgba(231,76,60,0.12); color: #E74C3C; }
+.tag-new { background: rgba(76,136,255,0.12); color: var(--info); }
+.task-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px; background: var(--surface); margin-bottom: 8px; }
+.task-title { font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+.task-prompt { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; font-size: 12px; color: #C8C4BF; line-height: 1.6; font-style: italic; margin-top: 6px; }
+.steps-list { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
+.step-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: #C8C4BF; }
+.step-n { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.practice-box { background: rgba(255,107,53,0.06); border: 1px solid rgba(255,107,53,0.15); border-radius: 8px; padding: 16px; margin: 12px 0; }
+.practice-label { font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 8px; }
+.practice-text { font-size: 13px; color: #C8C4BF; line-height: 1.6; }
+.cowork-steps { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+.cowork-step { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; display: flex; gap: 12px; }
+.cs-num { font-family: 'Unbounded', sans-serif; font-size: 18px; font-weight: 700; color: var(--accent); flex-shrink: 0; min-width: 28px; }
+.cs-body h4 { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.cs-body p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.done-btn { margin-top: 1.25rem; width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 12px; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; cursor: pointer; transition: opacity 0.2s, transform 0.1s; }
+.done-btn:hover { opacity: 0.88; }
+.done-btn:active { transform: scale(0.98); }
+.case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+.case-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+.case-team { font-size: 10px; font-weight: 500; letter-spacing: 0.04em; margin-bottom: 6px; text-transform: uppercase; }
+.case-team.sales { color: var(--teal); }
+.case-team.analytics { color: var(--info); }
+.case-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.case-result { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.case-result strong { color: var(--accent2); }
+.mod-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.nav-btn { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 18px; font-size: 13px; color: var(--muted); cursor: pointer; transition: all 0.2s; }
+.nav-btn:hover { border-color: #555; color: var(--text); }
+.nav-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.nav-btn.primary:hover { opacity: 0.88; }
+.placeholder-box { background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 1.25rem; margin: 12px 0; text-align: center; }
+.ph-label { font-size: 11px; color: var(--muted); font-style: italic; }
+.video-btn { display: flex; align-items: center; gap: 10px; background: rgba(255,107,53,0.08); border: 1px solid rgba(255,107,53,0.25); border-radius: 10px; padding: 14px 18px; text-decoration: none; margin: 14px 0; transition: background 0.2s; }
+.video-btn:hover { background: rgba(255,107,53,0.15); }
+.video-btn-title { font-size: 13px; font-weight: 500; color: #F0EDE8; }
+.video-btn-sub { font-size: 11px; color: #888; margin-top: 2px; }
+.video-btn-arr { margin-left: auto; font-size: 12px; color: var(--accent); }
+.quiz-block { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; }
+.quiz-block-label { font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.quiz-block-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.quiz-q { display: flex; flex-direction: column; gap: 14px; }
+.quiz-question { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+.quiz-opts { display: flex; flex-direction: column; gap: 6px; }
+.quiz-opt { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #C8C4BF; cursor: pointer; transition: all 0.15s; text-align: left; }
+.quiz-opt:hover:not(.answered) { border-color: #555; color: var(--text); }
+.quiz-opt.correct { border-color: var(--success) !important; background: rgba(76,175,125,0.08) !important; color: var(--success) !important; }
+.quiz-opt.wrong { border-color: #E74C3C !important; background: rgba(231,76,60,0.08) !important; color: #E74C3C !important; }
+.skill-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,107,53,0.1); border: 1px solid rgba(255,107,53,0.2); border-radius: 6px; padding: 4px 10px; font-size: 12px; color: var(--accent); font-weight: 500; margin: 2px; }
+.kasta-skill { background: rgba(255,209,102,0.1); border-color: rgba(255,209,102,0.3); color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="nav-logo">KASTA AI</div>
+  <div class="nav-sep" style="width:1px;height:20px;background:var(--border);"></div>
+  <div class="nav-title" id="nav-title">Виберіть модуль</div>
+  <div class="nav-progress">
+    <span id="nav-progress-text">0 / 0</span>
+    <div class="pbar"><div class="pbar-fill" id="pbar-fill" style="width:0%"></div></div>
+  </div>
+</nav>
+
+<div class="screen active" id="screen-welcome">
+  <div class="welcome">
+    <div class="w-tag">● KASTA AI КУРС</div>
+    <h1 class="w-title">Працюй швидше.<br>Думай <span>стратегічніше.</span></h1>
+    <p class="w-sub">Kasta будує AI-native компанію — де кожен співробітник використовує штучний інтелект не як іграшку, а як робочий інструмент щодня. Цей курс — твій старт.</p>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon">⚡</div><div class="why-label">ЕФЕКТИВНІСТЬ</div><div class="why-text">Задачі які займали годину — тепер займають 5 хвилин. AI прибирає рутину щоб ти займався важливим.</div></div>
+      <div class="why-card"><div class="why-icon">🚀</div><div class="why-label">ПЕРЕДОВИЙ ДОСВІД</div><div class="why-text">Ми не просто впроваджуємо AI — ми розвиваємо навички які стають перевагою в будь-якій ролі.</div></div>
+      <div class="why-card"><div class="why-icon">🧠</div><div class="why-label">ЧОМУ CLAUDE</div><div class="why-text">Один з найпотужніших AI-інструментів у світі. Розуміє контекст, працює з документами, виконує складні задачі.</div></div>
+      <div class="why-card"><div class="why-icon">🤝</div><div class="why-label">ДЛЯ КОМАНДИ</div><div class="why-text">Від особистої продуктивності до спільних інструментів — Claude масштабується під будь-який рівень роботи.</div></div>
+    </div>
+    <div class="result-box">
+      <div class="result-label">ПІСЛЯ КУРСУ ТИ ЗМОЖЕШ</div>
+      <div class="result-item"><span class="result-check">✓</span><span>Ефективно використовувати Claude для щоденних задач — від листів і аналізу до підготовки до переговорів</span></div>
+      <div class="result-item"><span class="result-check">✓</span><span>Налаштувати Projects, створювати Artifacts і будувати власні Skills</span></div>
+      <div class="result-item"><span class="result-check">✓</span><span>Запускати автономні задачі через Cowork — поки займаєшся іншим</span></div>
+      <div class="result-item"><span class="result-check">✓</span><span>Використовувати Claude прямо в Excel, PowerPoint і браузері</span></div>
+      <div class="result-item"><span class="result-check">✓</span><span>Ділитись інструментами з командою і разом прискорювати процеси</span></div>
+    </div>
+    <div class="habit-box">
+      <div class="habit-label">ГОЛОВНА ЗВИЧКА КАСТІВЦІВ</div>
+      <div class="habit-text">⚡ Перш ніж витратити годину на задачу — витрать 5 хвилин і спробуй зробити її з AI.</div>
+    </div>
+
+    <!-- ФОРМА РЕЄСТРАЦІЇ -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;" id="reg-form">
+      <div style="font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.12em;color:var(--accent);margin-bottom:14px;">РЕЄСТРАЦІЯ</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <input id="reg-name" type="text" placeholder="Твоє ім'я та прізвище" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text);outline:none;font-family:'Inter',sans-serif;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        <input id="reg-email" type="email" placeholder="Email (@kasta.ua)" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text);outline:none;font-family:'Inter',sans-serif;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        <select id="reg-team" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text);outline:none;font-family:'Inter',sans-serif;appearance:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+          <option value="" disabled selected>Обери свою команду</option>
+          <option>Сейлз / Категорійний менеджмент</option>
+          <option>Операційка</option>
+          <option>Логістика</option>
+          <option>Контакт-центр</option>
+          <option>Бухгалтерія / Фінанси</option>
+          <option>HR / People</option>
+          <option>Маркетинг</option>
+          <option>Аналітика / Продукт</option>
+          <option>IT / Розробка</option>
+          <option>Інше</option>
+        </select>
+        <div id="reg-error" style="font-size:12px;color:#E74C3C;display:none;">Заповни всі поля</div>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="registerAndStart()">Зареєструватись і почати курс →</button>
+  </div>
+</div>
+
+<!-- ДАШБОРД -->
+<div class="screen" id="screen-dashboard">
+  <div style="max-width:900px;margin:0 auto;padding:2.5rem 2rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;">
+      <div>
+        <div style="font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;color:var(--accent);">ДАШБОРД</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">Kasta AI Course · Адмін</div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="loadDashboard()" style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-family:'Unbounded',sans-serif;font-size:10px;font-weight:600;cursor:pointer;">↻ Оновити</button>
+        <button onclick="goWelcome()" style="background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:12px;cursor:pointer;">← Назад</button>
+      </div>
+    </div>
+
+    <!-- Статистика -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;">
+        <div style="font-family:'Unbounded',sans-serif;font-size:28px;font-weight:700;color:var(--accent);" id="d-stat-reg">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Зареєстровано</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;">
+        <div style="font-family:'Unbounded',sans-serif;font-size:28px;font-weight:700;color:var(--accent);" id="d-stat-active">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Почали проходження</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;">
+        <div style="font-family:'Unbounded',sans-serif;font-size:28px;font-weight:700;color:var(--accent);" id="d-stat-lessons">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Уроків завершено</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;">
+        <div style="font-family:'Unbounded',sans-serif;font-size:28px;font-weight:700;color:var(--accent);" id="d-stat-quiz">—</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Відповідей на квізи</div>
+      </div>
+    </div>
+
+    <!-- Команди -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;">
+      <div style="font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.1em;color:var(--accent);margin-bottom:14px;">УЧАСНИКИ ПО КОМАНДАХ</div>
+      <div id="d-teams" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;"></div>
+    </div>
+
+    <!-- Реєстрації -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;">
+      <div style="font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.1em;color:var(--accent);margin-bottom:14px;">РЕЄСТРАЦІЇ</div>
+      <div id="d-regs" style="font-size:13px;color:var(--muted);">Завантаження...</div>
+    </div>
+
+    <!-- Прогрес -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;">
+      <div style="font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.1em;color:var(--accent);margin-bottom:14px;">ПРОГРЕС СТУДЕНТІВ</div>
+      <div id="d-progress" style="font-size:13px;color:var(--muted);">Завантаження...</div>
+    </div>
+
+    <!-- Квізи -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
+      <div style="font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.1em;color:var(--accent);margin-bottom:14px;">РЕЗУЛЬТАТИ КВІЗІВ</div>
+      <div id="d-quizzes" style="font-size:13px;color:var(--muted);">Завантаження...</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screen-course">
+  <div class="course-wrap">
+    <div class="sidebar">
+      <div class="sidebar-profile">
+        <div class="profile-change" onclick="goWelcome()">← на головну</div>
+        <div style="margin-top:8px;"><span onclick="showDashboard()" style="font-size:11px;color:var(--info);cursor:pointer;">📊 Дашборд адміна</span></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Основи — для всіх</div>
+        <div id="sidebar-mods-a"></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Просунутий рівень</div>
+        <div id="sidebar-mods-b"></div>
+      </div>
+    </div>
+    <div class="content-area" id="content-area"></div>
+  </div>
+</div>
+
+<script>
+const TRACKER_URL = 'https://script.google.com/macros/s/AKfycbwVTmfaskpSICeh1no4pPkJG26LN9eX8p-JmY360wNV25sWaUdKTVaPcxvhBwAzowtN/exec';
+
+let student = null;
+let courseStartTime = null;
+
+async function sendToSheets(data) {
+  try {
+    const key = `kasta-course:${data.type}:${data.studentId}:${Date.now()}`;
+    await window.storage.set(key, JSON.stringify(data), true);
+  } catch(e) {}
+}
+
+function showDashboard() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-dashboard').classList.add('active');
+  loadDashboard();
+}
+
+const MOD_NAMES = {
+  0:'Старт',1:'Інструменти',2:'Projects',3:'Artifacts',
+  4:'Skills',5:'Cowork: старт',6:'Cowork: налаштування',
+  7:'Claude in Excel',8:'Claude in PowerPoint',9:'Claude in Chrome',
+  10:'Claude Design',11:'Бібліотека'
+};
+
+async function loadDashboard() {
+  try {
+    const result = await window.storage.list('kasta-course:', true);
+    const keys = result?.keys || [];
+
+    const regs = [], lessons = [], quizzes = [];
+
+    for (const key of keys) {
+      try {
+        const rec = await window.storage.get(key, true);
+        if (!rec) continue;
+        const d = JSON.parse(rec.value);
+        if (d.type === 'registration') regs.push(d);
+        else if (d.type === 'lesson_complete') lessons.push(d);
+        else if (d.type === 'quiz_answer') quizzes.push(d);
+      } catch(e) {}
+    }
+
+    // Статистика
+    document.getElementById('d-stat-reg').textContent = regs.length;
+    document.getElementById('d-stat-active').textContent = new Set(lessons.map(l=>l.studentId)).size;
+    document.getElementById('d-stat-lessons').textContent = lessons.length;
+    document.getElementById('d-stat-quiz').textContent = quizzes.length;
+
+    // Команди
+    const teams = {};
+    regs.forEach(r => { teams[r.team] = (teams[r.team]||0)+1; });
+    const teamsSorted = Object.entries(teams).sort((a,b)=>b[1]-a[1]);
+    document.getElementById('d-teams').innerHTML = teamsSorted.length
+      ? teamsSorted.map(([t,c])=>`<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;"><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${t}</div><div style="font-family:'Unbounded',sans-serif;font-size:22px;font-weight:700;color:var(--accent);">${c}</div></div>`).join('')
+      : '<div style="color:var(--muted);font-size:13px;">Поки немає даних</div>';
+
+    // Реєстрації
+    document.getElementById('d-regs').innerHTML = regs.length
+      ? `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <tr style="border-bottom:1px solid var(--border);">
+            <th style="text-align:left;padding:8px;color:var(--muted);font-weight:500;">Ім'я</th>
+            <th style="text-align:left;padding:8px;color:var(--muted);font-weight:500;">Email</th>
+            <th style="text-align:left;padding:8px;color:var(--muted);font-weight:500;">Команда</th>
+          </tr>
+          ${[...regs].reverse().map(r=>`
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:10px 8px;color:#C8C4BF;">${r.name}</td>
+              <td style="padding:10px 8px;color:#C8C4BF;">${r.email}</td>
+              <td style="padding:10px 8px;"><span style="background:rgba(76,136,255,0.15);color:var(--info);font-size:10px;padding:2px 8px;border-radius:20px;">${r.team}</span></td>
+            </tr>`).join('')}
+        </table>`
+      : '<div style="color:var(--muted);">Поки ніхто не зареєструвався</div>';
+
+    // Прогрес
+    const byStudent = {};
+    lessons.forEach(l => {
+      if (!byStudent[l.studentId]) byStudent[l.studentId] = new Set();
+      byStudent[l.studentId].add(l.moduleId);
+    });
+    const lastLesson = {};
+    lessons.forEach(l => { lastLesson[l.studentId] = l; });
+
+    document.getElementById('d-progress').innerHTML = regs.length
+      ? `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <tr style="border-bottom:1px solid var(--border);">
+            <th style="text-align:left;padding:8px;color:var(--muted);font-weight:500;">Ім'я</th>
+            <th style="text-align:left;padding:8px;color:var(--muted);font-weight:500;">Команда</th>
+            <th style="text-align:left;padding:8px;color:var(--muted);font-weight:500;">Прогрес</th>
+            <th style="text-align:left;padding:8px;color:var(--muted);font-weight:500;">Останній модуль</th>
+          </tr>
+          ${regs.map(r => {
+            const done = byStudent[r.studentId]?.size || 0;
+            const pct = Math.round(done/12*100);
+            const last = lastLesson[r.studentId];
+            return `<tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:10px 8px;color:#C8C4BF;">${r.name}</td>
+              <td style="padding:10px 8px;"><span style="background:rgba(76,136,255,0.15);color:var(--info);font-size:10px;padding:2px 8px;border-radius:20px;">${r.team}</span></td>
+              <td style="padding:10px 8px;">
+                <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${done}/12 · ${pct}%</div>
+                <div style="width:100%;height:5px;background:var(--border);border-radius:3px;"><div style="width:${pct}%;height:100%;background:var(--accent);border-radius:3px;"></div></div>
+              </td>
+              <td style="padding:10px 8px;font-size:11px;color:#C8C4BF;">${last ? MOD_NAMES[last.moduleId]||`Модуль ${last.moduleId}` : '—'}</td>
+            </tr>`;
+          }).join('')}
+        </table>`
+      : '<div style="color:var(--muted);">Поки немає даних</div>';
+
+    // Квізи
+    document.getElementById('d-quizzes').innerHTML = quizzes.length
+      ? `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <tr style="border-bottom:1px solid var(--border);">
+            <th style="text-align:left;padding:8px;color:var(--muted);font-weight:500;">Ім'я</th>
+            <th style="text-align:left;padding:8px;color:var(--muted);font-weight:500;">Модуль</th>
+            <th style="text-align:left;padding:8px;color:var(--muted);font-weight:500;">Питання №</th>
+            <th style="text-align:left;padding:8px;color:var(--muted);font-weight:500;">Результат</th>
+          </tr>
+          ${[...quizzes].reverse().slice(0,50).map(q=>`
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:10px 8px;color:#C8C4BF;">${q.name}</td>
+              <td style="padding:10px 8px;font-size:11px;color:#C8C4BF;">${MOD_NAMES[q.moduleId]||`Модуль ${q.moduleId}`}</td>
+              <td style="padding:10px 8px;color:var(--muted);">№${q.questionIndex}</td>
+              <td style="padding:10px 8px;"><span style="font-size:10px;padding:2px 8px;border-radius:20px;${q.correct?'background:rgba(76,175,125,0.15);color:var(--success);':'background:rgba(231,76,60,0.12);color:#E74C3C;'}">${q.correct?'✓ Правильно':'✗ Неправильно'}</span></td>
+            </tr>`).join('')}
+        </table>`
+      : '<div style="color:var(--muted);">Поки немає відповідей</div>';
+
+  } catch(e) {
+    document.getElementById('d-regs').innerHTML = `<div style="color:#E74C3C;">Помилка: ${e.message}</div>`;
+  }
+}
+
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function getMinutesSinceStart() {
+  if (!courseStartTime) return 0;
+  return Math.round((Date.now() - courseStartTime) / 60000);
+}
+
+function sendToSheets(data) {
+  fetch(TRACKER_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).catch(() => {});
+}
+
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function getMinutesSinceStart() {
+  if (!courseStartTime) return 0;
+  return Math.round((Date.now() - courseStartTime) / 60000);
+}
+
+const modules = [
+// ─── МОДУЛЬ 0 ───────────────────────────────────────────────
+{
+  id:0, track:'a', pro:false,
+  tag:'МОДУЛЬ 0 · СТАРТ',
+  title:'Старт: що таке Claude і як почати',
+  lessons:3, duration:'30 хв',
+  objective:'Після цього модуля ти розумієш що таке Claude, маєш акаунт і зробив перший тестовий запит.',
+  content:`
+    <div class="lesson-card" id="lc-0-0" onclick="toggleLesson(0,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-0-0">1</div><div class="l-info"><div class="l-num">УРОК 1 · 12 хв</div><div class="l-name">Що таке Claude і як його вивчати</div></div></div>
+      <div class="lesson-body" id="lb-0-0">
+        <div class="sec-tag">ЩО ТАКЕ CLAUDE</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px;">
+          <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;">Claude — це не просто чат-бот</div>
+          <div style="font-size:13px;color:#C8C4BF;line-height:1.7;">Це AI-помічник який розуміє контекст, працює з великими обсягами інформації і може бути твоїм партнером у складних задачах. Claude здатний на діалог, аналіз, генерацію контенту і стратегічне мислення.</div>
+        </div>
+        <div class="sec-tag">НА ЩО ЗДАТНИЙ CLAUDE</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;"><div style="font-size:18px;margin-bottom:6px;">✍️</div><div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;">Тексти і контент</div><div style="font-size:12px;color:var(--muted);line-height:1.5;">Листи, звіти, описи, пости — з урахуванням твого стилю</div></div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;"><div style="font-size:18px;margin-bottom:6px;">🔍</div><div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;">Аналіз і дослідження</div><div style="font-size:12px;color:var(--muted);line-height:1.5;">Завантаж документи — Claude проаналізує і підсумує</div></div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;"><div style="font-size:18px;margin-bottom:6px;">🧩</div><div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;">Вирішення задач</div><div style="font-size:12px;color:var(--muted);line-height:1.5;">Складний аналіз, стратегічне мислення, розбір проблем</div></div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;"><div style="font-size:18px;margin-bottom:6px;">📚</div><div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;">Навчання і розвиток</div><div style="font-size:12px;color:var(--muted);line-height:1.5;">Пояснить складне просто, адаптується до твого рівня</div></div>
+        </div>
+        <div class="tip-box">💡 <strong>Контекстне вікно:</strong> Claude здатний обробити до 500+ сторінок тексту в одному запиті.</div>
+        <div class="sec-tag" style="margin-top:18px;">ЯК ВИВЧАТИ</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px;">
+          <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px;">Будь допитливим — і питай у чаті</div>
+          <div style="font-size:13px;color:#C8C4BF;line-height:1.7;">Не знаєш як щось зробити? Запитай у самого Claude. Не вийшло з першого разу? Уточни. Найкращий спосіб навчитись — це експериментувати. Перший запит не має бути ідеальним. Просто почни.</div>
+        </div>
+        <div class="sec-tag">МАРШРУТ КУРСУ</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:6px;">
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            ${[['#6B8CAE','0','Старт','Що таке Claude, реєстрація, перший запит'],['#7B9E8C','1','Інструменти','Chat, Cowork, Projects, Chrome, Excel, PPT'],['#8C9E7B','2','Projects','Робочі простори з пам\'яттю і документами'],['#9E8C7B','3','Artifacts','Готові документи, таблиці і діаграми'],['#A07B6B','4','Skills','Автоматизація повторюваних процесів'],['#A06B5B','5','Cowork: старт','Автономний режим, перша задача'],['#A05B4B','6','Cowork: налаштування','Skills, папки, підключення сервісів'],['#B07060','7','Claude in Excel','AI прямо в твоїх таблицях'],['#C07060','8','Claude in PowerPoint','Презентації з AI і брендом Kasta'],['#D07060','9','Claude in Chrome','AI в браузері на будь-якій сторінці'],['#FF6B35','10','Claude Design','Візуальний контент і дизайн-брифи'],['#FF8C35','11','Бібліотека','Запити, оновлення, підтримка системи']].map(([color,num,name,desc])=>`
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div style="background:${color};border-radius:6px;padding:4px 8px;font-size:9px;font-weight:700;color:#fff;white-space:nowrap;min-width:76px;text-align:center;">Модуль ${num}</div>
+                <div><div style="font-size:12px;font-weight:500;color:var(--text);">${name}</div><div style="font-size:11px;color:var(--muted);">${desc}</div></div>
+              </div>`).join('')}
+          </div>
+        </div>
+        <div class="tip-box">💡 Курс можна проходити як зручно. Але рекомендуємо пройти модулі 0–4 перш ніж переходити до Cowork — щоб не витрачати ліміти запитів на базові помилки.</div>
+        <button class="done-btn" onclick="markDone(0,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-0-1" onclick="toggleLesson(0,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-0-1">2</div><div class="l-info"><div class="l-num">УРОК 2 · 12 хв</div><div class="l-name">Реєстрація, тарифи і встановлення</div></div></div>
+      <div class="lesson-body" id="lb-0-1">
+        <div class="sec-tag">ДЕ ВИКОРИСТОВУВАТИ CLAUDE</div>
+        <div class="compare-grid">
+          <div class="compare-card a"><h4>ВЕБ-ВЕРСІЯ</h4><div class="compare-item">Відкрий claude.ai в браузері</div><div class="compare-item">Нічого встановлювати не потрібно</div><div class="compare-item">Доступна з будь-якого пристрою</div></div>
+          <div class="compare-card b"><h4>ЗАСТОСУНОК</h4><div class="compare-item">Встанови на комп'ютер (Mac / Windows)</div><div class="compare-item">Доступний Cowork і Code</div><div class="compare-item">Зліва кнопки: Chat / Cowork / Code</div></div>
+        </div>
+        <div class="sec-tag">ЯК ЗАРЕЄСТРУВАТИСЬ</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Зайди на <strong>claude.ai</strong></span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Натисни <strong>Sign up</strong> → зареєструйся через Google або email</span></div>
+          <div class="step-item"><div class="step-n">3</div><span>Підтверди email — і ти всередині</span></div>
+        </div>
+        <div class="sec-tag">ТАРИФИ</div>
+        <div class="compare-grid">
+          <div class="compare-card a"><h4>БЕЗКОШТОВНИЙ</h4><div class="compare-item">Chat — базові запити</div><div class="compare-item">Projects і Skills</div><div class="compare-item">Обмежена кількість запитів на день</div><div class="compare-item">Без Cowork, Chrome</div></div>
+          <div class="compare-card b"><h4>ПЛАТНИЙ — $20/міс</h4><div class="compare-item">Необмежений чат з пріоритетом</div><div class="compare-item">Cowork — автономні задачі</div><div class="compare-item">Claude in Chrome</div><div class="compare-item">Більший обсяг контексту</div></div>
+        </div>
+        <div class="sec-tag">КОМПЕНСАЦІЯ В KASTA</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Погодь підписку зі своїм керівником</span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Оплати на claude.ai → <strong>Upgrade to Pro</strong></span></div>
+          <div class="step-item"><div class="step-n">3</div><span>Подай на компенсацію щомісяця в <strong>People Force</strong></span></div>
+          <div class="step-item"><div class="step-n">4</div><span>Отримай компенсацію з наступною зарплатою</span></div>
+        </div>
+        <div class="sec-tag">ВСТАНОВЛЕННЯ ЗАСТОСУНКУ</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Зайди на <strong>claude.ai/download</strong></span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Завантаж версію для Mac або Windows</span></div>
+          <div class="step-item"><div class="step-n">3</div><span>Встанови і увійди з тим самим акаунтом</span></div>
+        </div>
+        <div class="pro-note">⚠ На корпоративному комп'ютері потрібен дозвіл. Надішли запит на <strong>help@kasta.ua</strong> — займає 1–2 дні.</div>
+        <button class="done-btn" onclick="markDone(0,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-0-2" onclick="toggleLesson(0,2,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-0-2">3</div><div class="l-info"><div class="l-num">УРОК 3 · 6 хв</div><div class="l-name">Перевірочний чеклист і перший запит</div></div></div>
+      <div class="lesson-body" id="lb-0-2">
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">✓</div><span>Зареєструвався на claude.ai</span></div>
+          <div class="step-item"><div class="step-n">✓</div><span>Переглянув інтерфейс — знайшов чат і ліву панель</span></div>
+          <div class="step-item"><div class="step-n">✓</div><span>Якщо встановив застосунок — бачу Chat / Cowork / Code зліва</span></div>
+          <div class="step-item"><div class="step-n">✓</div><span>Зробив перший тестовий запит</span></div>
+        </div>
+        <div class="tip-box">💡 Чеклист можна пройти і в безкоштовній версії.</div>
+        <div class="practice-box">
+          <div class="practice-label">ПЕРШИЙ ЗАПИТ</div>
+          <div class="practice-text">👉 Відкрий чат і напиши:<br><br><em>"Привіт! Я [твоя посада] в Kasta. Що ти можеш зробити щоб допомогти мені в роботі?"</em></div>
+        </div>
+        <button class="done-btn" onclick="markDone(0,2,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+},
+// ─── МОДУЛЬ 1 ───────────────────────────────────────────────
+{
+  id:1, track:'a', pro:false,
+  tag:'МОДУЛЬ 1 · ОСНОВИ',
+  title:'Що є в Claude: інструменти і можливості',
+  lessons:4, duration:'30 хв',
+  objective:'Після цього модуля ти орієнтуєшся в інструментах Claude, знаєш яку версію обрати і розумієш різницю між Chat, Cowork і Projects.',
+  content:`
+    <div class="lesson-card" id="lc-1-0" onclick="toggleLesson(1,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-1-0">1</div><div class="l-info"><div class="l-num">УРОК 1 · 7 хв</div><div class="l-name">Інтерфейс і всі інструменти Claude</div></div></div>
+      <div class="lesson-body" id="lb-1-0">
+        <div class="sec-tag">ІНТЕРФЕЙС</div>
+        <div class="content-text"><strong>На сайті claude.ai</strong><br>Ліва панель — список чатів і Projects. Центр — основне вікно для спілкування.</div>
+        <div class="content-text"><strong>У застосунку на комп'ютері</strong><br>Зліва три кнопки — <strong>Chat, Cowork, Code</strong>. Починай з Chat.</div>
+        <div class="sec-tag">ІНСТРУМЕНТИ</div>
+        <div class="eco-grid">
+          <div class="eco-card"><div class="eco-icon">💬</div><div class="eco-name">Chat</div><div class="eco-desc">Запити, тексти, аналіз</div><span class="eco-tag tag-free">Безкоштовно</span></div>
+          <div class="eco-card"><div class="eco-icon">⚡</div><div class="eco-name">Cowork</div><div class="eco-desc">Автономні задачі у фоні</div><span class="eco-tag tag-pro">Потрібен Pro</span></div>
+          <div class="eco-card"><div class="eco-icon">🎨</div><div class="eco-name">Claude Design</div><div class="eco-desc">Зображення і візуальний контент</div><span class="eco-tag tag-new">Потрібен Pro</span></div>
+          <div class="eco-card"><div class="eco-icon">🌐</div><div class="eco-name">Claude in Chrome</div><div class="eco-desc">AI на будь-якій сторінці браузера</div><span class="eco-tag tag-new">Потрібен Pro</span></div>
+          <div class="eco-card"><div class="eco-icon">📊</div><div class="eco-name">Claude in Excel</div><div class="eco-desc">Аналіз і таблиці прямо в Excel</div><span class="eco-tag tag-pro">Потрібен Pro</span></div>
+          <div class="eco-card"><div class="eco-icon">📎</div><div class="eco-name">Claude in PowerPoint</div><div class="eco-desc">Презентації з AI</div><span class="eco-tag tag-pro">Потрібен Pro</span></div>
+        </div>
+        <div class="tip-box">💡 Для початку достатньо Chat і Projects — вони доступні безкоштовно. Решта інструментів розбираємо в просунутих модулях.</div>
+        <button class="done-btn" onclick="markDone(1,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-1-1" onclick="toggleLesson(1,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-1-1">2</div><div class="l-info"><div class="l-num">УРОК 2 · 7 хв</div><div class="l-name">Версії Claude: Haiku, Sonnet, Opus</div></div></div>
+      <div class="lesson-body" id="lb-1-1">
+        <div class="content-text">Claude існує у трьох версіях. Назви залишаємо англійськими — вони відображаються саме так в інтерфейсі.</div>
+        <div class="models-grid">
+          <div class="model-card"><div class="model-name">Haiku</div><div class="model-tag">Швидкий · Прості задачі</div><div class="model-use">Перекласти, відформатувати, підсумувати</div></div>
+          <div class="model-card"><div class="model-name">Sonnet</div><div class="model-tag">Збалансований · Рекомендований</div><div class="model-use">90% щоденних задач</div></div>
+          <div class="model-card"><div class="model-name">Opus</div><div class="model-tag">Найпотужніший</div><div class="model-use">Складний аналіз, стратегія</div></div>
+        </div>
+        <div class="tip-box">💡 Починай з Sonnet. Переходь на Opus тільки для дійсно складних задач.</div>
+        <button class="done-btn" onclick="markDone(1,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-1-2" onclick="toggleLesson(1,2,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-1-2">3</div><div class="l-info"><div class="l-num">УРОК 3 · 7 хв</div><div class="l-name">Chat vs Projects: коли що використовувати</div></div></div>
+      <div class="lesson-body" id="lb-1-2">
+        <div class="compare-grid">
+          <div class="compare-card a"><h4>CHAT</h4><div class="compare-item">Кожна розмова — з нуля</div><div class="compare-item">Разові задачі</div></div>
+          <div class="compare-card b"><h4>PROJECTS</h4><div class="compare-item">Пам'ятає файли і налаштування</div><div class="compare-item">Повторювані задачі</div></div>
+        </div>
+        <div class="tip-box">💡 Задача повторюється → Projects. Разова → Chat.</div>
+        <button class="done-btn" onclick="markDone(1,2,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-1-3" onclick="toggleLesson(1,3,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-1-3">4</div><div class="l-info"><div class="l-num">УРОК 4 · 8 хв</div><div class="l-name">Чому контекст вирішує все</div></div></div>
+      <div class="lesson-body" id="lb-1-3">
+        <div class="content-text">Claude відповідає рівно настільки добре, наскільки добре ти пояснюєш задачу.</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span><strong>Хто ти:</strong> "Я категорійний менеджер Kasta"</span></div>
+          <div class="step-item"><div class="step-n">2</div><span><strong>Задача:</strong> "Мені потрібно підготуватись до дзвінка з постачальником"</span></div>
+          <div class="step-item"><div class="step-n">3</div><span><strong>Формат:</strong> "Дай список питань у вигляді маркованого списку"</span></div>
+          <div class="step-item"><div class="step-n">4</div><span><strong>Обмеження:</strong> "Максимум 7 питань, фокус на цінах і термінах"</span></div>
+        </div>
+        <div class="practice-box">
+          <div class="practice-label">ПРАКТИКА</div>
+          <div class="practice-text">👉 Відкрий Claude і напиши запит за цією формулою для реальної задачі цього тижня.</div>
+        </div>
+        <button class="done-btn" onclick="markDone(1,3,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+},
+// ─── МОДУЛЬ 2 · PROJECTS ────────────────────────────────────
+{
+  id:2, track:'a', pro:false,
+  tag:'МОДУЛЬ 2 · PROJECTS',
+  title:'Projects: робочий простір з пам\'яттю',
+  lessons:3, duration:'13 хв',
+  objective:'Після цього модуля у тебе є працюючий Project з інструкціями, документами і 2 ідеями для своєї роботи.',
+  content:`
+    <div class="lesson-card" id="lc-2-0" onclick="toggleLesson(2,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-2-0">1</div><div class="l-info"><div class="l-num">УРОК 1 · 4 хв</div><div class="l-name">Що таке Project і навіщо він мені</div></div></div>
+      <div class="lesson-body" id="lb-2-0">
+        <div class="content-text">Ти запитав щось у Claude. Закрив чат. Завтра відкриваєш новий — і починаєш з нуля. Знову пояснюєш хто ти, що в Kasta, який стиль.<br><br><strong>Project — це коли цього не треба робити.</strong></div>
+        <div class="compare-grid">
+          <div class="compare-card a"><h4>ПОТРІБЕН PROJECT</h4><div class="compare-item">Є документи які використовуєш регулярно</div><div class="compare-item">Потрібен сталий стиль відповідей</div><div class="compare-item">Працюєш разом з командою</div></div>
+          <div class="compare-card b"><h4>ВИСТАЧИТЬ ЧАТУ</h4><div class="compare-item">Разове питання</div><div class="compare-item">Не плануєш повертатись до теми</div></div>
+        </div>
+        <div class="case-grid">
+          <div class="case-card"><div class="case-team sales">🤝 Сейлз</div><div class="case-name">"Постачальники Q2"</div><div class="case-result">Пише "підготуй до дзвінка з Samsung" — Claude вже все знає</div></div>
+          <div class="case-card"><div class="case-team analytics">📞 Контакт-центр</div><div class="case-name">Project з FAQ і скриптами</div><div class="case-result">"Як відповісти клієнту про повернення?" — одразу в тоні Kasta</div></div>
+          <div class="case-card"><div class="case-team sales">💰 Бухгалтерія</div><div class="case-name">Project із шаблонами звітів</div><div class="case-result">"Зроби звіт за квітень" — одразу за шаблоном</div></div>
+          <div class="case-card"><div class="case-team analytics">👥 HR</div><div class="case-name">Project з онбординг-матеріалами</div><div class="case-result">Новий співробітник — план за 2 хвилини</div></div>
+        </div>
+        <div class="practice-box"><div class="practice-label">ПРАКТИКА</div><div class="practice-text">👉 Яка задача в твоїй роботі повторюється щотижня і потребує одного й того самого контексту?</div></div>
+        <button class="done-btn" onclick="markDone(2,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-2-1" onclick="toggleLesson(2,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-2-1">2</div><div class="l-info"><div class="l-num">УРОК 2 · 5 хв</div><div class="l-name">Створи свій перший Project</div></div></div>
+      <div class="lesson-body" id="lb-2-1">
+        <div class="sec-tag">КРОК 1 — НАЛАШТУЙ</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Ліва панель → <strong>Projects</strong> → <strong>+ New Project</strong></span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Назви конкретно: <em>"Постачальники Q2"</em>, не <em>"Робота"</em></span></div>
+        </div>
+        <div class="sec-tag">КРОК 2 — ІНСТРУКЦІЇ</div>
+        <div class="tip-box">💡 Не пиши інструкції сам — попроси Claude:</div>
+        <div class="task-prompt" style="margin:8px 0 12px;">"Я [твоя посада] в Kasta. Цей проект — для [опис задачі]. Постав мені 3-5 уточнюючих питань і запропонуй готовий текст інструкцій який я зможу скопіювати."</div>
+        <div class="sec-tag">КРОК 3 — ДОКУМЕНТИ</div>
+        <div class="content-text">Праворуч → <strong>+</strong> → додай 1-2 файли. Підтримуються: PDF, DOCX, CSV, TXT, HTML.</div>
+        <div class="pro-note">⚠ Називай файли описово. <em>"Q2-2026-Прайс-Електроніка.pdf"</em> — добре. <em>"документ.pdf"</em> — погано.</div>
+        <div class="practice-box"><div class="practice-label">ПРАКТИКА</div><div class="practice-text">👉 Зроби це зараз. Назва, інструкції, один файл — 5 хвилин.</div></div>
+        <button class="done-btn" onclick="markDone(2,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-2-2" onclick="toggleLesson(2,2,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-2-2">3</div><div class="l-info"><div class="l-num">УРОК 3 · 4 хв</div><div class="l-name">Ідеї Projects для твоєї команди</div></div></div>
+      <div class="lesson-body" id="lb-2-2">
+        <div class="eco-grid">
+          <div class="eco-card"><div class="eco-icon">🤝</div><div class="eco-name">Сейлз</div><div class="eco-desc">Постачальники Q2, Категорія Електроніка</div></div>
+          <div class="eco-card"><div class="eco-icon">⚙️</div><div class="eco-name">Операційка</div><div class="eco-desc">Регламенти, Онбординг постачальників</div></div>
+          <div class="eco-card"><div class="eco-icon">🚚</div><div class="eco-name">Логістика</div><div class="eco-desc">Складські процеси, Перевізники</div></div>
+          <div class="eco-card"><div class="eco-icon">📞</div><div class="eco-name">Контакт-центр</div><div class="eco-desc">База відповідей, Скарги і ескалації</div></div>
+          <div class="eco-card"><div class="eco-icon">💰</div><div class="eco-name">Бухгалтерія</div><div class="eco-desc">Податкові звіти, Документообіг</div></div>
+          <div class="eco-card"><div class="eco-icon">👥</div><div class="eco-name">HR</div><div class="eco-desc">Онбординг новачків, Рекрутинг</div></div>
+          <div class="eco-card"><div class="eco-icon">📊</div><div class="eco-name">Маркетинг</div><div class="eco-desc">Кампанії, Контент-календар</div></div>
+        </div>
+        <div class="quiz-block">
+          <div class="quiz-block-label">КВІЗ</div>
+          <div class="quiz-q">
+            <div><div class="quiz-question">1. Ти щотижня пишеш звіти в одному форматі. Що використовувати?</div><div class="quiz-opts"><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">А) Звичайний Chat</div><div class="quiz-opt" onclick="answerQuiz(this,'correct')">Б) Project з шаблоном звіту</div><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">В) Пояснювати формат щоразу</div></div></div>
+            <div><div class="quiz-question">2. Тобі потрібно відповісти на одне разове питання. Що використовувати?</div><div class="quiz-opts"><div class="quiz-opt" onclick="answerQuiz(this,'correct')">А) Звичайний Chat</div><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">Б) Створити Project</div><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">В) Завантажити документ</div></div></div>
+            <div><div class="quiz-question">3. Команда працює над спільною кампанією. Що використовувати?</div><div class="quiz-opts"><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">А) Кожен робить свій Chat</div><div class="quiz-opt" onclick="answerQuiz(this,'correct')">Б) Project зі спільним доступом</div><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">В) Надсилати файли одне одному</div></div></div>
+          </div>
+        </div>
+        <div class="practice-box" style="margin-top:14px;"><div class="practice-label">ЗАВДАННЯ</div><div class="practice-text">👉 Запиши 2 ідеї Projects для своєї роботи.</div></div>
+        <button class="done-btn" onclick="markDone(2,2,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+},
+// ─── МОДУЛЬ 3 · ARTIFACTS ───────────────────────────────────
+{
+  id:3, track:'a', pro:false,
+  tag:'МОДУЛЬ 3 · ARTIFACTS',
+  title:'Artifacts: готові результати одразу',
+  lessons:3, duration:'11 хв',
+  objective:'Після цього модуля ти вмієш отримувати структуровані результати від Claude і ділитись ними з командою.',
+  content:`
+    <div style="background:rgba(76,175,125,0.08);border:1px solid rgba(76,175,125,0.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--success);">✓ Artifacts доступні безкоштовно — підписка не потрібна</div>
+    <div class="lesson-card" id="lc-3-0" onclick="toggleLesson(3,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-3-0">1</div><div class="l-info"><div class="l-num">УРОК 1 · 4 хв</div><div class="l-name">Що таке Artifact і де він з'являється</div></div></div>
+      <div class="lesson-body" id="lb-3-0">
+        <div class="content-text">Ти попросив Claude написати звіт. Отримав стіну тексту в чаті.<br><br><strong>Artifact — це коли результат з'являється в окремому вікні праворуч від чату.</strong> Готовий до використання одразу — можна скопіювати, завантажити або поділитись.</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;margin:10px 0;display:flex;gap:12px;align-items:flex-start;">
+          <div style="flex:1;border-right:1px solid var(--border);padding-right:12px;">
+            <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px;">ЧАТ (зліва)</div>
+            <div style="font-size:12px;color:#C8C4BF;line-height:1.6;">Твій діалог з Claude — питання, уточнення, інструкції</div>
+          </div>
+          <div style="flex:1;padding-left:0;">
+            <div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:8px;">ARTIFACT (справа)</div>
+            <div style="font-size:12px;color:#C8C4BF;line-height:1.6;">Готовий документ, таблиця або діаграма — окремо від чату</div>
+          </div>
+        </div>
+        <div class="sec-tag">КОЛИ CLAUDE СТВОРЮЄ ARTIFACT</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">→</div><span>Результат значний — зазвичай більше 15 рядків</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Це щось що захочеш відредагувати або використати повторно</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Якщо Claude відповів у чаті а не справа — напиши: <em>"Створи це як Artifact"</em></span></div>
+        </div>
+        <div class="eco-grid">
+          <div class="eco-card"><div class="eco-icon">📄</div><div class="eco-name">Документи</div><div class="eco-desc">Звіти, плани → Word або PDF</div></div>
+          <div class="eco-card"><div class="eco-icon">📊</div><div class="eco-name">Таблиці</div><div class="eco-desc">Excel з формулами</div></div>
+          <div class="eco-card"><div class="eco-icon">🗂️</div><div class="eco-name">Діаграми</div><div class="eco-desc">Блок-схеми, флоучарти</div></div>
+          <div class="eco-card"><div class="eco-icon">🌐</div><div class="eco-name">HTML</div><div class="eco-desc">Лендінги, форми</div></div>
+          <div class="eco-card"><div class="eco-icon">⚛️</div><div class="eco-name">Інтерактивні</div><div class="eco-desc">Калькулятори, дашборди</div></div>
+          <div class="eco-card"><div class="eco-icon">💻</div><div class="eco-name">Код</div><div class="eco-desc">Готовий код</div></div>
+        </div>
+        <div class="practice-box"><div class="practice-label">ПРАКТИКА</div><div class="practice-text">👉 Попроси Claude: <em>"Зроби шаблон тижневого звіту для [твоя посада] у вигляді таблиці. Оформи як окремий документ."</em></div></div>
+        <button class="done-btn" onclick="markDone(3,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-3-1" onclick="toggleLesson(3,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-3-1">2</div><div class="l-info"><div class="l-num">УРОК 2 · 4 хв</div><div class="l-name">Як отримати і редагувати потрібний Artifact</div></div></div>
+      <div class="lesson-body" id="lb-3-1">
+        <div class="compare-grid">
+          <div class="compare-card a"><h4>СЛАБКИЙ ЗАПИТ</h4><div class="compare-item">"Зроби бюджетний трекер"</div></div>
+          <div class="compare-card b"><h4>СИЛЬНИЙ ЗАПИТ</h4><div class="compare-item">"Зроби місячний трекер витрат де я вводжу суми по категоріях, бачу розбивку діаграмою і отримую попередження при перевищенні бюджету"</div></div>
+        </div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span><strong>Вказуй формат явно</strong> — "таблицю в Excel", "текстовий документ", "блок-схему"</span></div>
+          <div class="step-item"><div class="step-n">2</div><span><strong>Опиши хто буде використовувати</strong> — "для нових співробітників" vs "для операційної команди"</span></div>
+          <div class="step-item"><div class="step-n">3</div><span><strong>Ітеруй в тому самому чаті</strong> — пиши в чат зліва: "додай колонку Статус", "скороти текст", "перепиши другий пункт"</span></div>
+        </div>
+        <div class="task-card"><div class="task-title">🤝 Сейлз</div><div class="task-prompt">"Зроби шаблон комерційної пропозиції. Колонки: позиція / кількість / ціна / умови. Оформи як таблицю."</div></div>
+        <div class="task-card"><div class="task-title">📞 Контакт-центр</div><div class="task-prompt">"Зроби блок-схему обробки скарги клієнта — від першого звернення до вирішення."</div></div>
+        <div class="task-card"><div class="task-title">👥 HR</div><div class="task-prompt">"Зроби онбординг-план на 30 днів. Таблиця: тиждень / задача / відповідальний / статус."</div></div>
+        <div class="practice-box"><div class="practice-label">ПРАКТИКА</div><div class="practice-text">👉 Візьми реальну задачу і сформулюй запит за трьома правилами. Отримай Artifact — потім уточни в тому самому чаті.</div></div>
+        <button class="done-btn" onclick="markDone(3,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-3-2" onclick="toggleLesson(3,2,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-3-2">3</div><div class="l-info"><div class="l-num">УРОК 3 · 3 хв</div><div class="l-name">Поділись Artifact з командою</div></div></div>
+      <div class="lesson-body" id="lb-3-2">
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span><strong>Скопіювати або завантажити</strong> — кнопки в правому нижньому куті Artifact. Для Slack, пошти, особистого використання.</span></div>
+          <div class="step-item"><div class="step-n">2</div><span><strong>Опублікувати за посиланням</strong> — кнопка <strong>Share / Publish</strong> вгорі праворуч. Колега відкриває без акаунту Claude і може зробити "remix" — адаптувати під себе.</span></div>
+          <div class="step-item"><div class="step-n">3</div><span><strong>Командний доступ</strong> — для командних акаунтів, тільки для колег з вашого простору.</span></div>
+        </div>
+        <div class="tip-box">💡 Твій чат залишається приватним — публічним стає тільки сам Artifact.</div>
+        <div class="quiz-block">
+          <div class="quiz-block-label">КВІЗ</div>
+          <div class="quiz-q">
+            <div><div class="quiz-question">1. Де з'являється Artifact після того як Claude його створив?</div><div class="quiz-opts"><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">А) Внизу чату</div><div class="quiz-opt" onclick="answerQuiz(this,'correct')">Б) В окремому вікні праворуч від чату</div><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">В) Завантажується на комп'ютер автоматично</div></div></div>
+            <div><div class="quiz-question">2. Claude відповів текстом у чаті замість окремого вікна. Що написати?</div><div class="quiz-opts"><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">А) Почати новий чат</div><div class="quiz-opt" onclick="answerQuiz(this,'correct')">Б) "Створи це як Artifact"</div><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">В) Скопіювати текст вручну</div></div></div>
+            <div><div class="quiz-question">3. Хочеш щоб колега міг адаптувати твій Artifact під себе. Що зробити?</div><div class="quiz-opts"><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">А) Надіслати скріншот</div><div class="quiz-opt" onclick="answerQuiz(this,'correct')">Б) Опублікувати — колега зробить "remix"</div><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">В) Скопіювати текст в Slack</div></div></div>
+          </div>
+        </div>
+        <div class="practice-box" style="margin-top:14px;"><div class="practice-label">ЗАВДАННЯ</div><div class="practice-text">👉 Створи один Artifact і поділись з одним колегою.</div></div>
+        <button class="done-btn" onclick="markDone(3,2,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+},
+// ─── МОДУЛЬ 4 · SKILLS ──────────────────────────────────────
+{
+  id:4, track:'a', pro:false,
+  tag:'МОДУЛЬ 4 · SKILLS',
+  title:'Skills: автоматизуй повторювані процеси',
+  lessons:3, duration:'13 хв',
+  objective:'Після цього модуля ти знаєш які Skills вже є в Claude, вмієш завантажувати Skills від колег і створив свій перший Skill.',
+  content:`
+    <div class="lesson-card" id="lc-4-0" onclick="toggleLesson(4,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-4-0">1</div><div class="l-info"><div class="l-num">УРОК 1 · 4 хв</div><div class="l-name">Що таке Skills і що вже є в Claude</div></div></div>
+      <div class="lesson-body" id="lb-4-0">
+        <div class="content-text">Skill — папка з інструкціями яку Claude завантажує коли виконує певну задачу. Написав один раз — використовуєш завжди.<br><br>Ти вже використовував Skills — можливо не знав. Коли Claude створює Excel, PowerPoint або Word — він використовує вбудований Skill від Anthropic.</div>
+        <div class="sec-tag">ДЕ ЗНАЙТИ SKILLS</div>
+        <div class="content-text">Ліва панель → вкладка <strong>Customize</strong>. Там три категорії:<br><br><strong>Від Anthropic</strong> — вбудовані, доступні всім.<br><strong>Від команди</strong> — Skills які завантажили колеги.<br><strong>Твої власні</strong> — Skills які створив ти.</div>
+        <div class="sec-tag">ВБУДОВАНІ SKILLS ВІД ANTHROPIC</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;">
+          <span class="skill-tag">📊 Excel Spreadsheets</span>
+          <span class="skill-tag">📎 PowerPoint Presentations</span>
+          <span class="skill-tag">📄 Word Documents</span>
+          <span class="skill-tag">📋 PDF Creation</span>
+          <span class="skill-tag">💻 Code Execution</span>
+          <span class="skill-tag">🔍 Web Search</span>
+          <span class="skill-tag">📈 Data Analysis</span>
+          <span class="skill-tag">🎨 Image Generation</span>
+        </div>
+        <div class="tip-box">💡 Вбудовані Skills доступні на всіх тарифах. Вони вмикаються автоматично — просто пиши запит і Claude сам визначає який Skill застосувати.</div>
+        <div class="sec-tag">SKILLS VS PROJECTS</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:8px 0;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border);">
+            <div style="padding:8px 12px;font-size:11px;color:var(--muted);"></div>
+            <div style="padding:8px 12px;font-size:11px;font-weight:600;color:#10A37F;border-left:1px solid var(--border);">Projects</div>
+            <div style="padding:8px 12px;font-size:11px;font-weight:600;color:var(--accent);border-left:1px solid var(--border);">Skills</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border);">
+            <div style="padding:8px 12px;font-size:11px;color:var(--muted);">Що зберігає</div>
+            <div style="padding:8px 12px;font-size:11px;color:#C8C4BF;border-left:1px solid var(--border);">Знання і документи</div>
+            <div style="padding:8px 12px;font-size:11px;color:#C8C4BF;border-left:1px solid var(--border);">Процеси і алгоритми</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;">
+            <div style="padding:8px 12px;font-size:11px;color:var(--muted);">Приклад</div>
+            <div style="padding:8px 12px;font-size:11px;color:#C8C4BF;border-left:1px solid var(--border);">База знань про постачальників</div>
+            <div style="padding:8px 12px;font-size:11px;color:#C8C4BF;border-left:1px solid var(--border);">Алгоритм підготовки до переговорів</div>
+          </div>
+        </div>
+        <button class="done-btn" onclick="markDone(4,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-4-1" onclick="toggleLesson(4,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-4-1">2</div><div class="l-info"><div class="l-num">УРОК 2 · 4 хв</div><div class="l-name">Skills від колег і оновлення власних</div></div></div>
+      <div class="lesson-body" id="lb-4-1">
+        <div class="sec-tag">ЗАВАНТАЖИТИ SKILL ВІД КОЛЕГИ</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Колега ділиться посиланням на Skill</span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Ти переходиш за посиланням → натискаєш <strong>"Додати Skill"</strong></span></div>
+          <div class="step-item"><div class="step-n">3</div><span>Skill з'являється в твоєму Customize → готовий до використання</span></div>
+        </div>
+        <div class="tip-box">💡 Один хороший Skill × 10 людей в команді = ×10 до ефективності. Діліться напрацюваннями.</div>
+        <div class="sec-tag">КОЛИ ОНОВЛЮВАТИ SKILL</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">!</div><span>Змінився процес або шаблон який описаний у Skill</span></div>
+          <div class="step-item"><div class="step-n">!</div><span>З'явився новий контекст який треба врахувати</span></div>
+          <div class="step-item"><div class="step-n">!</div><span>Результати Skill стали гіршими або неактуальними</span></div>
+        </div>
+        <div class="sec-tag">ЯК ОНОВИТИ SKILL</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Ліва панель → <strong>Customize</strong> → знайди Skill</span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Натисни <strong>Edit</strong> → відредагуй інструкцію вручну</span></div>
+          <div class="step-item"><div class="step-n">3</div><span>Або напиши Claude: <em>"Онови мій Skill /назва — додай [що додати]"</em> → Claude оновить файл</span></div>
+        </div>
+        <div class="practice-box"><div class="practice-label">ПРАКТИКА</div><div class="practice-text">👉 Зайди в Customize і подивись які Skills вже доступні тобі. Є Skills від колег з Kasta?</div></div>
+        <button class="done-btn" onclick="markDone(4,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-4-2" onclick="toggleLesson(4,2,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-4-2">3</div><div class="l-info"><div class="l-num">УРОК 3 · 5 хв</div><div class="l-name">Створи свій власний Skill</div></div></div>
+      <div class="lesson-body" id="lb-4-2">
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span><strong>Опиши задачу</strong> — відкрий новий чат: <em>"Хочу створити Skill для підготовки до переговорів з постачальником."</em></span></div>
+          <div class="step-item"><div class="step-n">2</div><span><strong>Відповідай на питання Claude</strong> — що саме має робити Skill, як виглядає хороший результат</span></div>
+          <div class="step-item"><div class="step-n">3</div><span><strong>Завантаж референси</strong> — шаблони, гайди, приклади роботи</span></div>
+          <div class="step-item"><div class="step-n">4</div><span><strong>Збережи Skill</strong> — Claude згенерує файл. Збережи — і він одразу доступний у Customize</span></div>
+        </div>
+        <div class="sec-tag">ІДЕЇ ДЛЯ ВЛАСНИХ SKILLS У KASTA</div>
+        <div class="eco-grid">
+          <div class="eco-card"><div class="eco-icon">🤝</div><div class="eco-name">Сейлз</div><div class="eco-desc">/переговори, /аналіз-постачальника, /лист-постачальнику</div></div>
+          <div class="eco-card"><div class="eco-icon">⚙️</div><div class="eco-name">Операційка</div><div class="eco-desc">/інструкція, /протокол, /онбординг</div></div>
+          <div class="eco-card"><div class="eco-icon">📊</div><div class="eco-name">Маркетинг</div><div class="eco-desc">/бриф, /пост, /seo-опис</div></div>
+          <div class="eco-card"><div class="eco-icon">📞</div><div class="eco-name">Контакт-центр</div><div class="eco-desc">/відповідь-клієнту, /ескалація</div></div>
+          <div class="eco-card"><div class="eco-icon">👥</div><div class="eco-name">HR</div><div class="eco-desc">/онбординг, /вакансія</div></div>
+          <div class="eco-card"><div class="eco-icon">💰</div><div class="eco-name">Бухгалтерія</div><div class="eco-desc">/звіт, /акт</div></div>
+        </div>
+        <div class="tip-box">💡 Один Skill — один процес. Починай з найчастішої задачі.</div>
+        <div class="quiz-block">
+          <div class="quiz-block-label">КВІЗ</div>
+          <div class="quiz-q">
+            <div><div class="quiz-question">1. Де знайти всі доступні Skills в Claude?</div><div class="quiz-opts"><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">А) В розділі Projects</div><div class="quiz-opt" onclick="answerQuiz(this,'correct')">Б) Ліва панель → Customize</div><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">В) В налаштуваннях акаунту</div></div></div>
+            <div><div class="quiz-question">2. Skill від колеги став неактуальним. Що зробити?</div><div class="quiz-opts"><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">А) Видалити і створити новий</div><div class="quiz-opt" onclick="answerQuiz(this,'correct')">Б) Відредагувати в Customize або попросити Claude оновити</div><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">В) Нічого — Skills не оновлюються</div></div></div>
+            <div><div class="quiz-question">3. Ти хочеш щоб Claude готував аналіз постачальника за методологією Kasta. Що використовувати?</div><div class="quiz-opts"><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">А) Завантажувати шаблон щоразу</div><div class="quiz-opt" onclick="answerQuiz(this,'wrong')">Б) Зберегти шаблон в Project</div><div class="quiz-opt" onclick="answerQuiz(this,'correct')">В) Створити власний Skill з алгоритмом</div></div></div>
+          </div>
+        </div>
+        <div class="practice-box" style="margin-top:14px;"><div class="practice-label">ЗАВДАННЯ</div><div class="practice-text">👉 Створи свій перший Skill. Обери одну повторювану задачу — і пройди 4 кроки вище. Поділись з одним колегою.</div></div>
+        <button class="done-btn" onclick="markDone(4,2,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+},
+// ─── МОДУЛЬ 5 · COWORK СТАРТ ────────────────────────────────
+{
+  id:5, track:'b', pro:true,
+  tag:'МОДУЛЬ 5 · COWORK',
+  title:'Cowork: перші кроки',
+  lessons:5, duration:'35 хв',
+  objective:'Після цього модуля ти розберешся в Cowork і запустиш першу самостійну задачу.',
+  content:`
+    <div class="pro-note">⚠ Потрібна платна підписка — Pro ($20/міс) або Max ($100/міс)</div>
+    <div class="lesson-card" id="lc-5-0" onclick="toggleLesson(5,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-5-0">1</div><div class="l-info"><div class="l-num">УРОК 1 · ~20 хв</div><div class="l-name">AI Гільдія: дивись як налаштувати Cowork</div></div></div>
+      <div class="lesson-body" id="lb-5-0">
+        <div class="content-text">Один з форматів AI в Kasta — регулярні зустрічі AI Гільдії, де ми розбираємо інструменти і ділимось прикладами з різних команд.<br><br>У цьому записі — покроковий розбір Cowork і Claude in Excel з нуля. Подивись перш ніж налаштовувати самостійно.</div>
+        <a href="https://uakasta-my.sharepoint.com/:v:/g/personal/kastalive_kasta_ua/IQCl-f1apNlbQoPIJiwP0lKWAawFL78mhNOOaiPOrQXEQ6o?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=kWebbA" target="_blank" class="video-btn">
+          <span style="font-size:22px;">▶️</span>
+          <div><div class="video-btn-title">Дивитись запис AI Гільдії</div><div class="video-btn-sub">Відкриється в SharePoint · ~20 хв</div></div>
+          <span class="video-btn-arr">→</span>
+        </a>
+        <div class="tip-box">💡 Для перегляду потрібно бути залогіненим у корпоративний акаунт Microsoft (@kasta.ua).</div>
+        <button class="done-btn" onclick="markDone(5,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-5-1" onclick="toggleLesson(5,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-5-1">2</div><div class="l-info"><div class="l-num">УРОК 2 · 7 хв</div><div class="l-name">Що таке Cowork і чим він відрізняється від Chat</div></div></div>
+      <div class="lesson-body" id="lb-5-1">
+        <div class="compare-grid">
+          <div class="compare-card a"><h4>CHAT</h4><div class="compare-item">Відповідає на питання</div><div class="compare-item">Ти керуєш кожним кроком</div><div class="compare-item">Результат — текст у чаті</div></div>
+          <div class="compare-card b"><h4>COWORK</h4><div class="compare-item">Виконує задачі самостійно</div><div class="compare-item">Працює у фоні поки ти займаєшся іншим</div><div class="compare-item">Результат — готовий файл у папці</div></div>
+        </div>
+        <div class="tip-box">💡 Приклад: завантаж рахунки від постачальників → Cowork читає, створює Excel зі звітом → ти отримуєш готовий файл.</div>
+        <button class="done-btn" onclick="markDone(5,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-5-2" onclick="toggleLesson(5,2,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-5-2">3</div><div class="l-info"><div class="l-num">УРОК 3 · 7 хв</div><div class="l-name">Встановлення і огляд інтерфейсу</div></div></div>
+      <div class="lesson-body" id="lb-5-2">
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Оплати платний тариф на claude.ai</span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Завантаж комп'ютерний застосунок Claude</span></div>
+          <div class="step-item"><div class="step-n">3</div><span>Відкрий застосунок → зліва натисни <strong>Cowork</strong></span></div>
+        </div>
+        <div class="steps-list" style="margin-top:12px;">
+          <div class="step-item"><div class="step-n">+</div><span><strong>Нова задача</strong> — створити нову задачу для Claude</span></div>
+          <div class="step-item"><div class="step-n">🕐</div><span><strong>Заплановані</strong> — задачі за розкладом</span></div>
+          <div class="step-item"><div class="step-n">⚙</div><span><strong>Налаштування</strong> — додаткові можливості</span></div>
+          <div class="step-item"><div class="step-n">📁</div><span><strong>Робоча папка</strong> — підключення папки з комп'ютера</span></div>
+        </div>
+        <button class="done-btn" onclick="markDone(5,2,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-5-3" onclick="toggleLesson(5,3,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-5-3">4</div><div class="l-info"><div class="l-num">УРОК 4 · 8 хв</div><div class="l-name">Перша задача і перевірочний запит</div></div></div>
+      <div class="lesson-body" id="lb-5-3">
+        <div class="task-prompt" style="margin:12px 0;">"Я хочу [зробити X], щоб [Y стало краще]. Спочатку прочитай всі потрібні файли в папці. Перш ніж починати — постав уточнюючі питання. Починай роботу лише після того як ми узгодили план."</div>
+        <div class="practice-box">
+          <div class="practice-label">ПЕРЕВІРОЧНИЙ ЗАПИТ</div>
+          <div class="practice-text">"Прочитай всі файли в папці з контекстом. Потім скажи мені: 1. Що ти знаєш про мене. 2. Як я хочу щоб ти працював. 3. Які постійні налаштування тобі відомі. Поки нічого іншого не починай."</div>
+        </div>
+        <button class="done-btn" onclick="markDone(5,3,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-5-4" onclick="toggleLesson(5,4,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-5-4">5</div><div class="l-info"><div class="l-num">УРОК 5 · 7 хв</div><div class="l-name">Skills у Cowork: суперсила команди</div></div></div>
+      <div class="lesson-body" id="lb-5-4">
+        <div style="border-radius:12px;overflow:hidden;margin:14px 0;display:grid;grid-template-columns:1fr 1fr;">
+          <div style="background:#F5F0E8;padding:20px;">
+            <div style="display:inline-block;background:#FF6B35;color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;margin-bottom:12px;">Claude AI</div>
+            <div style="font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;color:#1a1a1a;line-height:1.2;margin-bottom:8px;">Skills в Claude:<br>командна суперсила</div>
+            <div style="font-size:11px;color:#555;margin-bottom:14px;">Skill — збережена інструкція за командою /назва.</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">
+              <div style="background:#FF6B35;border-radius:8px;padding:10px 8px;"><div style="font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;">01</div><div style="font-size:10px;font-weight:700;color:#fff;margin-bottom:3px;">Створити</div><div style="font-size:9px;color:rgba(255,255,255,0.85);line-height:1.5;">Опиши задачу — Claude запише як Skill.</div></div>
+              <div style="background:#FF6B35;border-radius:8px;padding:10px 8px;"><div style="font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;">02</div><div style="font-size:10px;font-weight:700;color:#fff;margin-bottom:3px;">Імпортувати</div><div style="font-size:9px;color:rgba(255,255,255,0.85);line-height:1.5;">Skills від колег — в 2 кліки.</div></div>
+              <div style="background:#FF6B35;border-radius:8px;padding:10px 8px;"><div style="font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;">03</div><div style="font-size:10px;font-weight:700;color:#fff;margin-bottom:3px;">Поділитись</div><div style="font-size:9px;color:rgba(255,255,255,0.85);line-height:1.5;">Ділися Skills з командою.</div></div>
+            </div>
+            <div style="margin-top:10px;font-size:10px;font-weight:700;color:#FF6B35;">Kasta+</div>
+          </div>
+          <div style="background:#FF6B35;padding:20px;display:flex;flex-direction:column;justify-content:space-between;">
+            <div style="font-family:'Unbounded',sans-serif;font-size:34px;font-weight:700;color:#fff;">/skill</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.9);margin-bottom:14px;">Виклич командою / в чаті</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;gap:8px;"><span style="color:#fff;flex-shrink:0;">—</span><span style="font-size:11px;font-weight:700;color:#fff;">Автоматизуй повторювані задачі</span></div>
+              <div style="display:flex;gap:8px;"><span style="color:#fff;flex-shrink:0;">—</span><span style="font-size:11px;font-weight:700;color:#fff;">Стандартизуй процеси в команді</span></div>
+              <div style="display:flex;gap:8px;"><span style="color:#fff;flex-shrink:0;">—</span><span style="font-size:11px;font-weight:700;color:#fff;">Оновив 1 раз = результат ×3–×10</span></div>
+            </div>
+          </div>
+        </div>
+        <button class="done-btn" onclick="markDone(5,4,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+},
+// ─── МОДУЛЬ 6 · COWORK НАЛАШТУВАННЯ ────────────────────────
+{
+  id:6, track:'b', pro:true,
+  tag:'МОДУЛЬ 6 · COWORK',
+  title:'Cowork: 6 кроків налаштування',
+  lessons:4, duration:'50 хв',
+  objective:'Після цього модуля Cowork налаштований під твої задачі: є робоча папка, контекстні файли, глобальні інструкції і підключення сервісів.',
+  content:`
+    <div class="pro-note">⚠ Потрібна платна підписка — Pro ($20/міс) або Max ($100/міс)</div>
+    <div class="lesson-card" id="lc-6-0" onclick="toggleLesson(6,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-6-0">1</div><div class="l-info"><div class="l-num">КРОКИ 1–2</div><div class="l-name">Робоча папка і файли з контекстом</div></div></div>
+      <div class="lesson-body" id="lb-6-0">
+        <div class="cowork-steps">
+          <div class="cowork-step"><div class="cs-num">1</div><div class="cs-body"><h4>Налаштуй робочу папку</h4><p>Створи папку на робочому столі. В Cowork → "Робоча папка" → вибери цю папку. Попроси Claude самостійно створити підпапки.</p></div></div>
+          <div class="cowork-step"><div class="cs-num">2</div><div class="cs-body"><h4>Напиши файли з контекстом</h4><p>Попроси Claude створити файли в папці "контекст": хто ти, як хочеш щоб він працював, які постійні задачі є. Це його "пам'ять" між сесіями.</p></div></div>
+        </div>
+        <button class="done-btn" onclick="markDone(6,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-6-1" onclick="toggleLesson(6,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-6-1">2</div><div class="l-info"><div class="l-num">КРОК 3</div><div class="l-name">Глобальні інструкції</div></div></div>
+      <div class="lesson-body" id="lb-6-1">
+        <div class="cowork-steps">
+          <div class="cowork-step"><div class="cs-num">3</div><div class="cs-body"><h4>Налаштуй глобальні інструкції</h4><p>Налаштування → Cowork → Глобальні інструкції. Вставте текст зі свого файлу. Це налаштування діє на всі задачі.</p></div></div>
+        </div>
+        <div class="tip-box">💡 Пропиши: мову відповіді, формат результату, що ніколи не робити без підтвердження.</div>
+        <button class="done-btn" onclick="markDone(6,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-6-2" onclick="toggleLesson(6,2,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-6-2">3</div><div class="l-info"><div class="l-num">КРОК 4</div><div class="l-name">Додаткові можливості і власні сценарії</div></div></div>
+      <div class="lesson-body" id="lb-6-2">
+        <div class="cowork-steps">
+          <div class="cowork-step"><div class="cs-num">4</div><div class="cs-body"><h4>Підключи додаткові можливості</h4><p>Налаштування → Додатки. Для сейлзу: Продажі, Фінанси. Для маркетингу: Маркетинг, Дизайн. Для операційки: Операції.</p></div></div>
+        </div>
+        <div class="content-text" style="margin-top:12px;">Після підключення — <strong>створи власні сценарії</strong> через "Створити з Claude".</div>
+        <button class="done-btn" onclick="markDone(6,2,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-6-3" onclick="toggleLesson(6,3,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-6-3">4</div><div class="l-info"><div class="l-num">КРОКИ 5–6</div><div class="l-name">Підключення сервісів і заплановані задачі</div></div></div>
+      <div class="lesson-body" id="lb-6-3">
+        <div class="cowork-steps">
+          <div class="cowork-step"><div class="cs-num">5</div><div class="cs-body"><h4>Підключи зовнішні сервіси</h4><p>Налаштування → Підключення. Доступні: Gmail, Google Calendar, Notion, Slack, Figma та інші.</p></div></div>
+          <div class="cowork-step"><div class="cs-num">6</div><div class="cs-body"><h4>Заплануй повторювані задачі</h4><p>Заплановані → Нова задача. Або /schedule прямо в чаті Cowork. Задачі виконуються поки комп'ютер увімкнений.</p></div></div>
+        </div>
+        <button class="done-btn" onclick="markDone(6,3,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+},
+// ─── МОДУЛЬ 7 · CLAUDE IN EXCEL ─────────────────────────────
+{
+  id:7, track:'b', pro:true,
+  tag:'МОДУЛЬ 7 · CLAUDE IN EXCEL',
+  title:'Claude in Excel: AI прямо в таблицях',
+  lessons:2, duration:'16 хв',
+  objective:'Після цього модуля ти підключив Claude in Excel і знаєш для яких задач він підходить.',
+  content:`
+    <div class="pro-note">⚠ Потрібна платна підписка і Microsoft Excel</div>
+    <div class="lesson-card" id="lc-7-0" onclick="toggleLesson(7,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-7-0">1</div><div class="l-info"><div class="l-num">УРОК 1 · 8 хв</div><div class="l-name">Що таке Claude in Excel і як підключити</div></div></div>
+      <div class="lesson-body" id="lb-7-0">
+        <div class="content-text">Claude for Excel додає Claude в Microsoft Excel через бічну панель — аналізуєш і змінюєш таблиці через діалог, не виходячи з Excel.</div>
+        <div class="sec-tag">ЯК ПІДКЛЮЧИТИ</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Відкрий Excel → вкладка <strong>Insert</strong> → <strong>Get Add-ins</strong></span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Знайди <strong>Claude for Excel</strong> від Anthropic → <strong>Add</strong></span></div>
+          <div class="step-item"><div class="step-n">3</div><span>Увійди з акаунтом claude.ai — Claude з'явиться як бічна панель</span></div>
+        </div>
+        <div class="sec-tag">КОЛИ ВИКОРИСТОВУВАТИ</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">→</div><span>Складний файл з кількома аркушами — хочеш зрозуміти як працюють формули</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Є помилки #REF!, #VALUE! — Claude знайде причину і запропонує виправлення</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Потрібна зведена таблиця або графік для візуалізації даних</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Заповнити шаблон даними зберігаючи структуру формул</span></div>
+        </div>
+        <button class="done-btn" onclick="markDone(7,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-7-1" onclick="toggleLesson(7,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-7-1">2</div><div class="l-info"><div class="l-num">УРОК 2 · 8 хв</div><div class="l-name">Приклади для команд Kasta</div></div></div>
+      <div class="lesson-body" id="lb-7-1">
+        <div class="task-card"><div class="task-title">🤝 Сейлз / Категорійний</div><div class="task-prompt">"Проаналізуй динаміку GMV по постачальниках за 6 місяців. Знайди тих у кого падіння більше 20%."</div></div>
+        <div class="task-card"><div class="task-title">💰 Бухгалтерія</div><div class="task-prompt">"В рядку 47 є помилка #REF!. Знайди причину і запропонуй виправлення без зміни структури таблиці."</div></div>
+        <div class="task-card"><div class="task-title">📊 Аналітика</div><div class="task-prompt">"Створи зведену таблицю і графік: продажі по категоріях за квартал, топ-5 категорій."</div></div>
+        <div class="task-card"><div class="task-title">⚙️ Операційка</div><div class="task-prompt">"Заповни шаблон онбордингу постачальника даними з цього списку. Збережи структуру і формули."</div></div>
+        <div class="practice-box"><div class="practice-label">ПРАКТИКА</div><div class="practice-text">👉 Підключи Claude in Excel і відкрий будь-яку свою робочу таблицю. Запитай: <em>"Поясни структуру цього файлу і що роблять основні формули."</em></div></div>
+        <button class="done-btn" onclick="markDone(7,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+},
+// ─── МОДУЛЬ 8 · CLAUDE IN POWERPOINT ───────────────────────
+{
+  id:8, track:'b', pro:true,
+  tag:'МОДУЛЬ 8 · CLAUDE IN POWERPOINT',
+  title:'Claude in PowerPoint: презентації з AI',
+  lessons:2, duration:'16 хв',
+  objective:'Після цього модуля ти підключив Claude in PowerPoint і знаєш як використовувати брендований скіл Kasta.',
+  content:`
+    <div class="pro-note">⚠ Потрібна платна підписка і Microsoft PowerPoint</div>
+    <div class="lesson-card" id="lc-8-0" onclick="toggleLesson(8,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-8-0">1</div><div class="l-info"><div class="l-num">УРОК 1 · 8 хв</div><div class="l-name">Claude in PowerPoint: що це і як підключити</div></div></div>
+      <div class="lesson-body" id="lb-8-0">
+        <div class="content-text">Claude for PowerPoint додає Claude в Microsoft PowerPoint як бічну панель. Створюєш, редагуєш і реструктуруєш презентації через діалог — зберігаючи шаблон і стиль бренду.</div>
+        <div class="sec-tag">ЯК ПІДКЛЮЧИТИ</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Відкрий PowerPoint → вкладка <strong>Insert</strong> → <strong>Get Add-ins</strong></span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Знайди <strong>Claude for PowerPoint</strong> від Anthropic → <strong>Add</strong></span></div>
+          <div class="step-item"><div class="step-n">3</div><span>Увійди з акаунтом claude.ai — Claude з'явиться як бічна панель</span></div>
+        </div>
+        <div class="sec-tag">КОЛИ ВИКОРИСТОВУВАТИ</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">→</div><span>Перетворити outline, документ або нотатки в готову презентацію без побудови кожного слайду вручну</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Переписати або скоротити текст слайдів, додати speaker notes, змінити тон</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Реструктурувати існуючу презентацію — переставити секції, розбити перевантажені слайди</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Узгодити форматування по всій презентації — заголовки, стилі, лейаути</span></div>
+        </div>
+        <button class="done-btn" onclick="markDone(8,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-8-1" onclick="toggleLesson(8,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-8-1">2</div><div class="l-info"><div class="l-num">УРОК 2 · 8 хв</div><div class="l-name">Скіл брендованих презентацій Kasta</div></div></div>
+      <div class="lesson-body" id="lb-8-1">
+        <div style="background:rgba(255,209,102,0.07);border:1px solid rgba(255,209,102,0.2);border-radius:10px;padding:16px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <span class="skill-tag kasta-skill">/kasta-pptx-brand</span>
+            <span style="font-size:11px;color:var(--muted);">Kasta · Внутрішній скіл</span>
+          </div>
+          <div style="font-size:13px;color:#C8C4BF;line-height:1.7;">Скіл для створення брендованих презентацій Kasta. Знає фірмові кольори, шрифти і правила оформлення слайдів. Дозволяє створювати презентації які виглядають як Kasta — без ручного налаштування кожного елементу.</div>
+        </div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Завантаж <strong>/kasta-pptx-brand</strong> з бібліотеки Kasta AI Hub</span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Відкрий PowerPoint → запусти Claude in PowerPoint</span></div>
+          <div class="step-item"><div class="step-n">3</div><span>Напиши <strong>/kasta-pptx-brand</strong> і опиши що треба створити</span></div>
+        </div>
+        <div class="task-card"><div class="task-title">📊 Приклад</div><div class="task-prompt">/kasta-pptx-brand Зроби презентацію для квартального огляду категорії Електроніка. 8 слайдів: результати / динаміка GMV / топ-постачальники / проблеми / план Q2.</div></div>
+        <div class="practice-box"><div class="practice-label">ПРАКТИКА</div><div class="practice-text">👉 Завантаж скіл /kasta-pptx-brand і створи першу брендовану презентацію для реальної задачі.</div></div>
+        <button class="done-btn" onclick="markDone(8,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+},
+// ─── МОДУЛЬ 9 · CLAUDE IN CHROME ────────────────────────────
+{
+  id:9, track:'b', pro:true,
+  tag:'МОДУЛЬ 9 · CLAUDE IN CHROME',
+  title:'Claude in Chrome: AI прямо в браузері',
+  lessons:2, duration:'16 хв',
+  objective:'Після цього модуля ти встановив розширення Claude in Chrome і знаєш як використовувати його в роботі.',
+  content:`
+    <div class="pro-note">⚠ Потрібна платна підписка і браузер Google Chrome</div>
+    <div class="pro-note" style="border-color:rgba(76,136,255,0.3);color:var(--info);background:rgba(76,136,255,0.06);">ℹ Claude in Chrome зараз у режимі дослідницького preview. Рекомендуємо для задач з низьким ризиком на надійних сайтах.</div>
+    <div class="lesson-card" id="lc-9-0" onclick="toggleLesson(9,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-9-0">1</div><div class="l-info"><div class="l-num">УРОК 1 · 8 хв</div><div class="l-name">Що таке Claude in Chrome і як встановити</div></div></div>
+      <div class="lesson-body" id="lb-9-0">
+        <div class="content-text">Claude for Chrome — розширення яке додає Claude як бічну панель в Google Chrome. Claude бачить що ти переглядаєш і може виконувати дії прямо в браузері.</div>
+        <div class="sec-tag">ЯК ВСТАНОВИТИ</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Відкрий Chrome Web Store → знайди <strong>Claude for Chrome</strong> від Anthropic</span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Натисни <strong>Add to Chrome</strong> → увійди з акаунтом claude.ai</span></div>
+          <div class="step-item"><div class="step-n">3</div><span>Іконка Claude з'явиться в панелі розширень</span></div>
+        </div>
+        <div class="sec-tag">КОЛИ ВИКОРИСТОВУВАТИ</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">→</div><span>Підсумувати статтю або веб-сторінку під час перегляду</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Допомога з написанням або обробкою листів прямо в Gmail</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Заповнення однотипних форм — автоматизуй процес</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Зберігає контекст між вкладками — CRM, внутрішні інструменти, дашборди</span></div>
+        </div>
+        <div class="tip-box">💡 Claude запитує дозвіл перед ризикованими діями. Фінансові сайти заблоковані за замовчуванням.</div>
+        <button class="done-btn" onclick="markDone(9,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-9-1" onclick="toggleLesson(9,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-9-1">2</div><div class="l-info"><div class="l-num">УРОК 2 · 8 хв</div><div class="l-name">Приклади для команд Kasta</div></div></div>
+      <div class="lesson-body" id="lb-9-1">
+        <div class="task-card"><div class="task-title">🤝 Сейлз / Категорійний</div><div class="task-prompt">"Я відкрив сайт постачальника. Зроби короткий summary: що вони продають, умови партнерства, мінімальне замовлення."</div></div>
+        <div class="task-card"><div class="task-title">📊 Маркетинг / Аналітика</div><div class="task-prompt">"Я на сторінці конкурента. Проаналізуй їх акційні пропозиції і порівняй з нашими умовами."</div></div>
+        <div class="task-card"><div class="task-title">📞 Контакт-центр</div><div class="task-prompt">"Я в Gmail. Допоможи написати відповідь клієнту який скаржиться на затримку доставки. Тон: дружній, з вибаченням і конкретним рішенням."</div></div>
+        <div class="task-card"><div class="task-title">👥 HR</div><div class="task-prompt">"Я переглядаю профіль кандидата на LinkedIn. Зроби короткий summary і запропонуй 3 питання для першого дзвінка."</div></div>
+        <div class="practice-box"><div class="practice-label">ПРАКТИКА</div><div class="practice-text">👉 Встанови розширення і спробуй перший запит на будь-якій робочій сторінці яку зараз переглядаєш.</div></div>
+        <button class="done-btn" onclick="markDone(9,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+},
+// ─── МОДУЛЬ 10 · CLAUDE DESIGN ──────────────────────────────
+{
+  id:10, track:'b', pro:true,
+  tag:'МОДУЛЬ 10 · CLAUDE DESIGN',
+  title:'Claude Design: візуальний контент з AI',
+  lessons:2, duration:'25 хв',
+  objective:'Після цього модуля ти знаєш для яких задач підходить Claude Design і спробував його для реальної задачі.',
+  content:`
+    <div class="pro-note">⚠ Потрібна платна підписка</div>
+    <div class="lesson-card" id="lc-10-0" onclick="toggleLesson(10,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-10-0">1</div><div class="l-info"><div class="l-num">УРОК 1 · 12 хв</div><div class="l-name">Claude Design: що це і для яких задач</div></div></div>
+      <div class="lesson-body" id="lb-10-0">
+        <div class="content-text">Claude Design — інструмент для створення візуального контенту: зображення, банери, ілюстрації, макети і технічні завдання для дизайнера.</div>
+        <div class="sec-tag">КОЛИ ВИКОРИСТОВУВАТИ</div>
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">→</div><span>Потрібно швидко згенерувати зображення для презентації, поста або бренду</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Хочеш зробити детальне ТЗ для дизайнера — з описом стилю, кольорів, композиції</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Потрібен варіант зображення для тесту перш ніж замовляти у дизайнера</span></div>
+          <div class="step-item"><div class="step-n">→</div><span>Хочеш ітеративно пробувати різні візуальні концепції швидко</span></div>
+        </div>
+        <div class="placeholder-box"><div class="ph-label">[Плейсхолдер] Приклад від команди Kasta: як Design використовується в роботі</div></div>
+        <div class="practice-box"><div class="practice-label">ПРАКТИКА</div><div class="practice-text">👉 Спробуй Claude Design для однієї задачі цього тижня:<br><br><em>"Зроби ТЗ для дизайнера для акційного банера — розпродаж електроніки, знижка 30%, стиль Kasta."</em></div></div>
+        <button class="done-btn" onclick="markDone(10,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-10-1" onclick="toggleLesson(10,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-10-1">2</div><div class="l-info"><div class="l-num">УРОК 2 · 13 хв</div><div class="l-name">Приклади по командах</div></div></div>
+      <div class="lesson-body" id="lb-10-1">
+        <div class="task-card"><div class="task-title">📊 Маркетинг</div><div class="task-prompt">"Згенеруй зображення для посту в Instagram: акція на дитячі товари, весняна тематика, яскраво і позитивно."</div></div>
+        <div class="task-card"><div class="task-title">🤝 Сейлз</div><div class="task-prompt">"Зроби ТЗ для дизайнера для банера Retail Media: для постачальників які хочуть рекламуватись на Kasta. Аудиторія — B2B, тон — діловий але дружній."</div></div>
+        <div class="task-card"><div class="task-title">👥 HR</div><div class="task-prompt">"Створи зображення для внутрішнього поста про нову HR-ініціативу. Стиль: корпоративний але живий, кольори Kasta."</div></div>
+        <div class="placeholder-box"><div class="ph-label">[Плейсхолдер] Кейси операційки і аналітики</div></div>
+        <button class="done-btn" onclick="markDone(10,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+},
+// ─── МОДУЛЬ 11 · БІБЛІОТЕКА ─────────────────────────────────
+{
+  id:11, track:'b', pro:false,
+  tag:'МОДУЛЬ 11 · БІБЛІОТЕКА',
+  title:'Бібліотека запитів і підтримка системи',
+  lessons:3, duration:'33 хв',
+  objective:'Після цього модуля у тебе є особиста колекція запитів і ти знаєш коли і як оновлювати свою AI-систему.',
+  content:`
+    <div class="lesson-card" id="lc-11-0" onclick="toggleLesson(11,0,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-11-0">1</div><div class="l-info"><div class="l-num">УРОК 1 · 10 хв</div><div class="l-name">Бібліотека запитів команди</div></div></div>
+      <div class="lesson-body" id="lb-11-0">
+        <div class="content-text">Бібліотека запитів — Google Таблиця або Notion де зберігаються найкращі запити команди. Формат назви: <em>[Посада] — [Задача] — [Версія]</em></div>
+        <div class="placeholder-box"><div class="ph-label">[Плейсхолдер] Посилання на бібліотеку Kasta AI Hub</div></div>
+        <div class="practice-box"><div class="practice-label">ПРАКТИКА</div><div class="practice-text">👉 Збережи 3 запити які вже спрацювали для тебе. Дай кожному назву за форматом вище.</div></div>
+        <button class="done-btn" onclick="markDone(11,0,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-11-1" onclick="toggleLesson(11,1,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-11-1">2</div><div class="l-info"><div class="l-num">УРОК 2 · 8 хв</div><div class="l-name">Як адаптувати чужий запит</div></div></div>
+      <div class="lesson-body" id="lb-11-1">
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">1</div><span>Змін посаду на свою: "Я сейлз" → "Я категорійний менеджер"</span></div>
+          <div class="step-item"><div class="step-n">2</div><span>Змін контекст: додай специфіку своєї задачі і команди</span></div>
+          <div class="step-item"><div class="step-n">3</div><span>Перевір формат: таблиця, список, текст — вкажи явно</span></div>
+        </div>
+        <button class="done-btn" onclick="markDone(11,1,event)">Урок завершено →</button>
+      </div>
+    </div>
+    <div class="lesson-card" id="lc-11-2" onclick="toggleLesson(11,2,this)">
+      <div class="lesson-head"><div class="l-status" id="ls-11-2">3</div><div class="l-info"><div class="l-num">УРОК 3 · 8 хв</div><div class="l-name">Коли оновлювати систему</div></div></div>
+      <div class="lesson-body" id="lb-11-2">
+        <div class="steps-list">
+          <div class="step-item"><div class="step-n">!</div><span>Claude відповідає більш загально ніж раніше</span></div>
+          <div class="step-item"><div class="step-n">!</div><span>Документи в Projects застаріли</span></div>
+          <div class="step-item"><div class="step-n">!</div><span>Змінились твої задачі або посада</span></div>
+        </div>
+        <div class="practice-box">
+          <div class="practice-label">ПЕРЕГЛЯД РАЗ НА МІСЯЦЬ</div>
+          <div class="practice-text">Постав собі питання: "Які задачі я роблю з AI щотижня? Що з них можна передати в Cowork? Які запити застаріли?"</div>
+        </div>
+        <button class="done-btn" onclick="markDone(11,2,event)">Урок завершено →</button>
+      </div>
+    </div>
+  `
+}
+];
+
+function registerAndStart() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const team = document.getElementById('reg-team').value;
+  const errEl = document.getElementById('reg-error');
+
+  if (!name || !email || !team) {
+    errEl.textContent = 'Заповни всі поля';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  if (!email.endsWith('@kasta.ua')) {
+    errEl.textContent = 'Введи корпоративну пошту @kasta.ua';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  errEl.style.display = 'none';
+
+  student = {
+    id: generateId(),
+    name,
+    email,
+    team,
+    userAgent: navigator.userAgent
+  };
+
+  courseStartTime = Date.now();
+
+  sendToSheets({
+    type: 'registration',
+    studentId: student.id,
+    name: student.name,
+    email: student.email,
+    team: student.team,
+    userAgent: student.userAgent
+  });
+
+  startCourse();
+}
+
+function startCourse() {
+  document.getElementById('screen-welcome').classList.remove('active');
+  document.getElementById('screen-course').classList.add('active');
+  buildSidebar();
+  showModule(0);
+}
+function goWelcome() {
+  document.getElementById('screen-course').classList.remove('active');
+  document.getElementById('screen-welcome').classList.add('active');
+}
+function buildSidebar() {
+  const aEl = document.getElementById('sidebar-mods-a');
+  const bEl = document.getElementById('sidebar-mods-b');
+  aEl.innerHTML = ''; bEl.innerHTML = '';
+  modules.forEach((m,i) => {
+    const el = document.createElement('div');
+    el.className = 'mod-item';
+    el.id = 'sidebar-mod-' + i;
+    el.onclick = () => showModule(i);
+    el.innerHTML = `<div class="mod-num-badge">${m.id}</div><div class="mod-item-info"><div class="mod-item-name">${m.title}</div><div class="mod-item-dur">${m.duration}${m.pro ? ' <span class="pro-badge">Потрібен Pro</span>' : ''}</div></div>`;
+    if (m.track === 'a') aEl.appendChild(el);
+    else bEl.appendChild(el);
+  });
+}
+function showModule(idx) {
+  currentMod = idx;
+  const m = modules[idx];
+  document.querySelectorAll('.mod-item').forEach(el => el.classList.remove('active'));
+  const sEl = document.getElementById('sidebar-mod-' + idx);
+  if (sEl) sEl.classList.add('active');
+  document.getElementById('nav-title').textContent = m.title;
+  updateProgress();
+  const area = document.getElementById('content-area');
+  area.innerHTML = `
+    <div class="module-header">
+      <div class="mod-tag">${m.tag}</div>
+      <div class="mod-title">${m.title}</div>
+      <div class="mod-meta">
+        <div class="meta-item"><div class="meta-dot"></div>${m.lessons} уроки</div>
+        <div class="meta-item"><div class="meta-dot"></div>${m.duration}</div>
+        ${m.pro ? '<div class="meta-item"><div class="meta-dot" style="background:#E74C3C"></div>Потрібна платна підписка</div>' : ''}
+      </div>
+      <div class="objective-box"><div class="obj-label">РЕЗУЛЬТАТ МОДУЛЯ</div><div class="obj-text">${m.objective}</div></div>
+    </div>
+    ${m.content}
+    <div class="mod-nav">
+      ${idx > 0 ? `<button class="nav-btn" onclick="showModule(${idx-1})">← Попередній</button>` : '<div></div>'}
+      ${idx < modules.length-1 ? `<button class="nav-btn primary" onclick="showModule(${idx+1})">Наступний →</button>` : '<div class="nav-btn primary" style="opacity:0.5;pointer-events:none">Курс завершено 🎉</div>'}
+    </div>
+  `;
+  area.scrollTop = 0;
+  window.scrollTo(0,0);
+  restoreDoneState(idx);
+}
+function updateProgress() {
+  const done = modules.filter(m => doneModules.has(m.id)).length;
+  const pct = modules.length ? (done/modules.length*100) : 0;
+  document.getElementById('nav-progress-text').textContent = done + ' / ' + modules.length;
+  document.getElementById('pbar-fill').style.width = pct + '%';
+}
+function toggleLesson(modId, lesId, card) {
+  const body = document.getElementById('lb-'+modId+'-'+lesId);
+  const isOpen = body.classList.contains('open');
+  modules[modId] && Array.from({length:modules[modId].lessons},(_,i)=>{
+    const b = document.getElementById('lb-'+modId+'-'+i);
+    const c = document.getElementById('lc-'+modId+'-'+i);
+    if(b) b.classList.remove('open');
+    if(c && !c.classList.contains('done')) c.classList.remove('active');
+  });
+  if(!isOpen) {
+    body.classList.add('open');
+    if(!card.classList.contains('done')) card.classList.add('active');
+  }
+}
+function answerQuiz(el, type) {
+  const group = el.closest('.quiz-opts');
+  if(group.querySelector('.answered')) return;
+  group.querySelectorAll('.quiz-opt').forEach(opt => {
+    opt.classList.add('answered');
+    opt.style.pointerEvents = 'none';
+  });
+  if(type === 'correct') {
+    el.classList.add('correct');
+    el.innerHTML += ' ✓';
+  } else {
+    el.classList.add('wrong');
+    el.innerHTML += ' ✗';
+    const correct = group.querySelector('[onclick*="correct"]');
+    if(correct) correct.classList.add('correct');
+  }
+}
+function markDone(modId, lesId, e) {
+  e.stopPropagation();
+  const key = modId+'-'+lesId;
+  doneMap[key] = true;
+  const card = document.getElementById('lc-'+key);
+  const status = document.getElementById('ls-'+key);
+  const body = document.getElementById('lb-'+key);
+  card.classList.remove('active'); card.classList.add('done');
+  status.textContent = '✓';
+  body.classList.remove('open');
+  const m = modules[modId];
+  const allDone = Array.from({length:m.lessons},(_,i)=>doneMap[modId+'-'+i]).every(Boolean);
+  if(allDone) {
+    doneModules.add(modId);
+    const sEl = document.getElementById('sidebar-mod-'+modId);
+    if(sEl) sEl.classList.add('done');
+    updateProgress();
+  }
+}
+function restoreDoneState(modId) {
+  const m = modules[modId];
+  Array.from({length:m.lessons},(_,i)=>{
+    const key = modId+'-'+i;
+    if(doneMap[key]) {
+      const card = document.getElementById('lc-'+key);
+      const status = document.getElementById('ls-'+key);
+      if(card) card.classList.add('done');
+      if(status) status.textContent = '✓';
+    }
+  });
+}
+</script>
+</body>
+</html>
